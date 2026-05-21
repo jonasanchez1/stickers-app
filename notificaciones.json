@@ -1,0 +1,40 @@
+{
+  "lista": [
+    {
+      "msg": "🔔 Diego está cerca y tiene 6 estampas que te faltan: BRA11, BRA13, BRA2...",
+      "tipo": "info",
+      "fecha": "20/05 19:13",
+      "leida": true
+    },
+    {
+      "msg": "🔔 Sofia está cerca y tiene 6 estampas que te faltan: ARG15, BRA13, BRA14...",
+      "tipo": "info",
+      "fecha": "20/05 19:13",
+      "leida": true
+    },
+    {
+      "msg": "🔔 Carlos está cerca y tiene 7 estampas que te faltan: ARG5, BRA11, BRA2...",
+      "tipo": "info",
+      "fecha": "20/05 19:13",
+      "leida": true
+    },
+    {
+      "msg": "🔔 Luis está cerca y tiene 7 estampas que te faltan: BRA13, BRA15, BRA2...",
+      "tipo": "info",
+      "fecha": "20/05 19:13",
+      "leida": true
+    },
+    {
+      "msg": "🔔 Ana está cerca y tiene 6 estampas que te faltan: BRA14, BRA16, BRA17...",
+      "tipo": "info",
+      "fecha": "20/05 19:13",
+      "leida": true
+    },
+    {
+      "msg": "📅 Creaste el evento: jona",
+      "tipo": "evento",
+      "fecha": "20/05 18:59",
+      "leida": true
+    }
+  ]
+}

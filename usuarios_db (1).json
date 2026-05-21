@@ -1,0 +1,37 @@
+{
+  "user001": {
+    "nombre": "Carlos",
+    "repetidas": ["MEX4", "ARG5", "BRA3", "ESP7", "FRA2"],
+    "faltantes": ["MEX10", "ARG15", "BRA8", "GER4", "ITA6"],
+    "lat": 31.7360,
+    "lon": -106.4860
+  },
+  "user002": {
+    "nombre": "Sofia",
+    "repetidas": ["MEX10", "ARG15", "ITA6", "GER4", "BRA8"],
+    "faltantes": ["MEX4", "ARG5", "BRA3", "ESP7", "URU11"],
+    "lat": 31.7340,
+    "lon": -106.4840
+  },
+  "user003": {
+    "nombre": "Diego",
+    "repetidas": ["ESP7", "URU11", "MEX18", "CAN3", "FRA7"],
+    "faltantes": ["MEX4", "ARG15", "ITA6", "BRA3", "FRA2"],
+    "lat": 31.7370,
+    "lon": -106.4870
+  },
+  "user004": {
+    "nombre": "Ana",
+    "repetidas": ["BRA3", "FRA2", "GER14", "MEX5", "ARG10"],
+    "faltantes": ["MEX10", "ESP7", "URU11", "MEX18", "CAN3"],
+    "lat": 31.7355,
+    "lon": -106.4855
+  },
+  "user005": {
+    "nombre": "Luis",
+    "repetidas": ["MEX4", "ITA4", "ESP9", "ARG5", "URU11"],
+    "faltantes": ["MEX18", "BRA3", "FRA2", "GER14", "MEX5"],
+    "lat": 31.7345,
+    "lon": -106.4845
+  }
+}
