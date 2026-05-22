@@ -354,6 +354,50 @@ def buscar_grupos_api(lat, lon, radio_km=5.0):
 
 
 def main(page: ft.Page):
+    import base64, time as _time
+
+    # ── SPLASH SCREEN ───────────────────────────────────────────────
+    logo_widget = ft.Column([
+        ft.Text("⚽", size=100, text_align=ft.TextAlign.CENTER),
+        ft.Text("STICKERS", size=42, weight=ft.FontWeight.BOLD,
+            color="#FCD34D", text_align=ft.TextAlign.CENTER),
+    ], horizontal_alignment=ft.CrossAxisAlignment.CENTER, spacing=8)
+
+    splash = ft.Container(
+        expand=True,
+        gradient=ft.LinearGradient(
+            begin=ft.Alignment(-1,-1), end=ft.Alignment(1,1),
+            colors=["#0D1B3E","#1A3A6B","#2563EB"],
+        ),
+        content=ft.Column([
+            ft.Container(expand=True),
+            logo_widget,
+            ft.Text("INTERCAMBIO DE ESTAMPAS", size=14, weight=ft.FontWeight.BOLD,
+                color=ft.Colors.with_opacity(0.8,"#FCD34D"), text_align=ft.TextAlign.CENTER),
+            ft.Container(height=20),
+            ft.ProgressRing(color="#FCD34D", stroke_width=3, width=32, height=32),
+            ft.Container(height=10),
+            ft.Text("Cargando...", size=12, color=ft.Colors.with_opacity(0.6,"#FFFFFF")),
+            ft.Container(expand=True),
+        ], horizontal_alignment=ft.CrossAxisAlignment.CENTER, spacing=10),
+    )
+
+    page.padding = 0
+    page.add(splash)
+    page.update()
+
+    # Esperar 2.5 segundos
+    import threading as _th2
+    def _quitar_splash():
+        _time.sleep(2.5)
+        page.controls.clear()
+        page.padding = 0
+        _init_app(page)
+        page.update()
+    _th2.Thread(target=_quitar_splash, daemon=True).start()
+    return
+
+def _init_app(page: ft.Page):
     page.title="Stickers — Intercambio de Estampas"
     page.scroll="adaptive"; page.theme_mode=ft.ThemeMode.LIGHT
     page.bgcolor="#F0F4FF"; page.padding=0
@@ -712,7 +756,7 @@ def main(page: ft.Page):
         txt_st=ft.Text("",size=13,color=ft.Colors.GREY_600,text_align=ft.TextAlign.CENTER)
         res_scan=ft.Column([],spacing=8)
         campo=ft.TextField(label="Tu nombre",value=nombre_u[0],width=260,border_radius=10,bgcolor=ft.Colors.WHITE)
-        qr_img=ft.Image(visible=False,width=220,height=220,fit=ft.ImageFit.CONTAIN)
+        qr_img=ft.Image(src="/tmp/qr_temp.png",visible=False,width=220,height=220,fit="contain")
         txt_qr_data=ft.Text("",size=0,visible=False)  # guarda datos del QR para pegar/compartir
 
         def gen(e):
@@ -728,7 +772,11 @@ def main(page: ft.Page):
                 img=qr.make_image(fill_color="black",back_color="white")
                 buf=io.BytesIO(); img.save(buf,format="PNG")
                 b64=base64.b64encode(buf.getvalue()).decode()
-                qr_img.src_base64=b64; qr_img.visible=True
+                import os as _os2
+                _qr_path = _os2.path.join(_os2.path.dirname(_os2.path.abspath(__file__)), "qr_temp.png")
+                with open(_qr_path, "wb") as _qf:
+                    _qf.write(buf.getvalue())
+                qr_img.src=_qr_path; qr_img.visible=True
                 txt_qr_data.value=texto_qr
                 txt_st.value=f"✅ QR listo — muéstraselo a la otra persona"
                 txt_st.color=ft.Colors.GREEN_700
@@ -2523,4 +2571,5 @@ def main(page: ft.Page):
     ], spacing=0, expand=True))
     cambiar("album")
 
-ft.app(main)
+import os as _os_main
+ft.app(main, assets_dir=_os_main.path.join(_os_main.path.dirname(_os_main.path.abspath(__file__)), "assets"))
