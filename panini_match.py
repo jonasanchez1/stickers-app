@@ -218,7 +218,7 @@ COLORES_ESPECIALES = {
 }
 
 ARCHIVO_GUARDADO = "album_guardado.json"
-SERVIDOR         = "http://localhost:5000"
+SERVIDOR         = "https://stickers-app-production-555a.up.railway.app"
 
 # Generar ID único por instalación
 ID_FILE = "mi_id.txt"
