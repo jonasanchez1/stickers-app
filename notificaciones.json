@@ -1,6 +1,66 @@
 {
   "lista": [
     {
+      "msg": "🔔 Diego está cerca y tiene 5 estampas que te faltan: BRA11, BRA2, BRA6...",
+      "tipo": "info",
+      "fecha": "21/05 22:54",
+      "leida": false
+    },
+    {
+      "msg": "🔔 Sofia está cerca y tiene 3 estampas que te faltan: ARG15, BRA14, BRA16",
+      "tipo": "info",
+      "fecha": "21/05 22:54",
+      "leida": false
+    },
+    {
+      "msg": "🔔 Carlos está cerca y tiene 5 estampas que te faltan: ARG5, BRA11, BRA2...",
+      "tipo": "info",
+      "fecha": "21/05 22:54",
+      "leida": false
+    },
+    {
+      "msg": "🔔 Luis está cerca y tiene 4 estampas que te faltan: BRA2, BRA4, BRA6...",
+      "tipo": "info",
+      "fecha": "21/05 22:54",
+      "leida": false
+    },
+    {
+      "msg": "🔔 Ana está cerca y tiene 4 estampas que te faltan: BRA14, BRA16, BRA4...",
+      "tipo": "info",
+      "fecha": "21/05 22:54",
+      "leida": false
+    },
+    {
+      "msg": "🔔 Diego está cerca y tiene 5 estampas que te faltan: BRA11, BRA2, BRA6...",
+      "tipo": "info",
+      "fecha": "21/05 22:54",
+      "leida": false
+    },
+    {
+      "msg": "🔔 Sofia está cerca y tiene 3 estampas que te faltan: ARG15, BRA14, BRA16",
+      "tipo": "info",
+      "fecha": "21/05 22:54",
+      "leida": false
+    },
+    {
+      "msg": "🔔 Carlos está cerca y tiene 5 estampas que te faltan: ARG5, BRA11, BRA2...",
+      "tipo": "info",
+      "fecha": "21/05 22:54",
+      "leida": false
+    },
+    {
+      "msg": "🔔 Luis está cerca y tiene 4 estampas que te faltan: BRA2, BRA4, BRA6...",
+      "tipo": "info",
+      "fecha": "21/05 22:54",
+      "leida": false
+    },
+    {
+      "msg": "🔔 Ana está cerca y tiene 4 estampas que te faltan: BRA14, BRA16, BRA4...",
+      "tipo": "info",
+      "fecha": "21/05 22:54",
+      "leida": false
+    },
+    {
       "msg": "🔔 Diego está cerca y tiene 6 estampas que te faltan: BRA11, BRA13, BRA2...",
       "tipo": "info",
       "fecha": "20/05 19:13",
