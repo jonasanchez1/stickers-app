@@ -2572,4 +2572,4 @@ def _init_app(page: ft.Page):
     cambiar("album")
 
 import os as _os_main
-ft.app(main, assets_dir=_os_main.path.join(_os_main.path.dirname(_os_main.path.abspath(__file__)), "assets"))
+ft.app(main)
