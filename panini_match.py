@@ -93,14 +93,14 @@ def agregar_notificacion(mensaje, tipo="info"):
     guardar_json(ARCHIVO_NOTIF, notifs)
     # Mostrar notificación del sistema Windows
     titulos = {
-        "intercambio": "🔄 Panini Match — Intercambio",
-        "evento":      "📅 Panini Match — Evento",
-        "reputacion":  "⭐ Panini Match — Reputación",
-        "grupo":       "👥 Panini Match — Grupos",
-        "mercado":     "🛒 Panini Match — Mercado",
-        "info":        "🔔 Panini Match",
+        "intercambio": "🔄 Stickers — Intercambio",
+        "evento":      "📅 Stickers — Evento",
+        "reputacion":  "⭐ Stickers — Reputación",
+        "grupo":       "👥 Stickers — Grupos",
+        "mercado":     "🛒 Stickers — Mercado",
+        "info":        "🔔 Stickers",
     }
-    titulo = titulos.get(tipo, "🔔 Panini Match")
+    titulo = titulos.get(tipo, "🔔 Stickers")
     notif_windows(titulo, mensaje[:100])
 
 def contar_no_leidas():
@@ -129,21 +129,21 @@ ESPECIALES = {
         ]
     },
     "MUSEO": {
-        "nombre": "FIFA Museum 🏆",
+        "nombre": "Campeones Históricos 🏆",
         "color": "purple",
         "descripcion": "Campeones históricos del mundo (foil)",
         "estampas": [
-            {"id":"FWC9",  "jugador":"Italia 1934", "pais":"Campeón Mundial", "tipo":"Foil Museum"},
-            {"id":"FWC10", "jugador":"Uruguay 1950", "pais":"Campeón Mundial", "tipo":"Foil Museum"},
-            {"id":"FWC11", "jugador":"Alemania 1954", "pais":"Campeón Mundial", "tipo":"Foil Museum"},
-            {"id":"FWC12", "jugador":"Brasil 1962", "pais":"Campeón Mundial", "tipo":"Foil Museum"},
-            {"id":"FWC13", "jugador":"Alemania 1974", "pais":"Campeón Mundial", "tipo":"Foil Museum"},
-            {"id":"FWC14", "jugador":"Argentina 1986", "pais":"Campeón Mundial", "tipo":"Foil Museum"},
-            {"id":"FWC15", "jugador":"Brasil 1994", "pais":"Campeón Mundial", "tipo":"Foil Museum"},
-            {"id":"FWC16", "jugador":"Brasil 2002", "pais":"Campeón Mundial", "tipo":"Foil Museum"},
-            {"id":"FWC17", "jugador":"Italia 2006", "pais":"Campeón Mundial", "tipo":"Foil Museum"},
-            {"id":"FWC18", "jugador":"Alemania 2014", "pais":"Campeón Mundial", "tipo":"Foil Museum"},
-            {"id":"FWC19", "jugador":"Argentina 2022", "pais":"Campeón Mundial", "tipo":"Foil Museum"},
+            {"id":"FWC9",  "jugador":"Italia 1934", "pais":"Campeón Mundial", "tipo":"Foil Histórico"},
+            {"id":"FWC10", "jugador":"Uruguay 1950", "pais":"Campeón Mundial", "tipo":"Foil Histórico"},
+            {"id":"FWC11", "jugador":"Alemania 1954", "pais":"Campeón Mundial", "tipo":"Foil Histórico"},
+            {"id":"FWC12", "jugador":"Brasil 1962", "pais":"Campeón Mundial", "tipo":"Foil Histórico"},
+            {"id":"FWC13", "jugador":"Alemania 1974", "pais":"Campeón Mundial", "tipo":"Foil Histórico"},
+            {"id":"FWC14", "jugador":"Argentina 1986", "pais":"Campeón Mundial", "tipo":"Foil Histórico"},
+            {"id":"FWC15", "jugador":"Brasil 1994", "pais":"Campeón Mundial", "tipo":"Foil Histórico"},
+            {"id":"FWC16", "jugador":"Brasil 2002", "pais":"Campeón Mundial", "tipo":"Foil Histórico"},
+            {"id":"FWC17", "jugador":"Italia 2006", "pais":"Campeón Mundial", "tipo":"Foil Histórico"},
+            {"id":"FWC18", "jugador":"Alemania 2014", "pais":"Campeón Mundial", "tipo":"Foil Histórico"},
+            {"id":"FWC19", "jugador":"Argentina 2022", "pais":"Campeón Mundial", "tipo":"Foil Histórico"},
         ]
     },
     "PARALLELS": {
@@ -170,41 +170,41 @@ ESPECIALES = {
         ]
     },
     "COCACOLA": {
-        "nombre": "Coca-Cola Exclusivas 🥤",
+        "nombre": "Exclusivas Especiales 🥤",
         "color": "red",
-        "descripcion": "Solo en tapas de botellas Coca-Cola",
+        "descripcion": "Solo en tapas de botellas Especial",
         "estampas": [
-            {"id":"CC1",  "jugador":"Lamine Yamal",       "pais":"España 🇪🇸",         "tipo":"Coca-Cola Exclusiva"},
-            {"id":"CC2",  "jugador":"Harry Kane",          "pais":"Inglaterra 🏴󠁧󠁢󠁥󠁮󠁧󠁿",   "tipo":"Coca-Cola Exclusiva"},
-            {"id":"CC3",  "jugador":"Joshua Kimmich",      "pais":"Alemania 🇩🇪",       "tipo":"Coca-Cola Exclusiva"},
-            {"id":"CC4",  "jugador":"Lautaro Martínez",    "pais":"Argentina 🇦🇷",      "tipo":"Coca-Cola Exclusiva"},
-            {"id":"CC5",  "jugador":"Jefferson Lerma",     "pais":"Colombia 🇨🇴",       "tipo":"Coca-Cola Exclusiva"},
-            {"id":"CC6",  "jugador":"Vinicius Jr.",         "pais":"Brasil 🇧🇷",         "tipo":"Coca-Cola Exclusiva"},
-            {"id":"CC7",  "jugador":"Pedri",               "pais":"España 🇪🇸",         "tipo":"Coca-Cola Exclusiva"},
-            {"id":"CC8",  "jugador":"Jude Bellingham",     "pais":"Inglaterra 🏴󠁧󠁢󠁥󠁮󠁧󠁿",   "tipo":"Coca-Cola Exclusiva"},
-            {"id":"CC9",  "jugador":"Erling Haaland",      "pais":"Noruega 🇳🇴",        "tipo":"Coca-Cola Exclusiva"},
-            {"id":"CC10", "jugador":"Christian Pulisic",   "pais":"Estados Unidos 🇺🇸", "tipo":"Coca-Cola Exclusiva"},
-            {"id":"CC11", "jugador":"Lionel Messi",        "pais":"Argentina 🇦🇷",      "tipo":"Coca-Cola Exclusiva"},
-            {"id":"CC12", "jugador":"Cristiano Ronaldo",   "pais":"Portugal 🇵🇹",       "tipo":"Coca-Cola Exclusiva"},
+            {"id":"CC1",  "jugador":"Lamine Yamal",       "pais":"España 🇪🇸",         "tipo":"Edición Especial"},
+            {"id":"CC2",  "jugador":"Harry Kane",          "pais":"Inglaterra 🏴󠁧󠁢󠁥󠁮󠁧󠁿",   "tipo":"Edición Especial"},
+            {"id":"CC3",  "jugador":"Joshua Kimmich",      "pais":"Alemania 🇩🇪",       "tipo":"Edición Especial"},
+            {"id":"CC4",  "jugador":"Lautaro Martínez",    "pais":"Argentina 🇦🇷",      "tipo":"Edición Especial"},
+            {"id":"CC5",  "jugador":"Jefferson Lerma",     "pais":"Colombia 🇨🇴",       "tipo":"Edición Especial"},
+            {"id":"CC6",  "jugador":"Vinicius Jr.",         "pais":"Brasil 🇧🇷",         "tipo":"Edición Especial"},
+            {"id":"CC7",  "jugador":"Pedri",               "pais":"España 🇪🇸",         "tipo":"Edición Especial"},
+            {"id":"CC8",  "jugador":"Jude Bellingham",     "pais":"Inglaterra 🏴󠁧󠁢󠁥󠁮󠁧󠁿",   "tipo":"Edición Especial"},
+            {"id":"CC9",  "jugador":"Erling Haaland",      "pais":"Noruega 🇳🇴",        "tipo":"Edición Especial"},
+            {"id":"CC10", "jugador":"Christian Pulisic",   "pais":"Estados Unidos 🇺🇸", "tipo":"Edición Especial"},
+            {"id":"CC11", "jugador":"Lionel Messi",        "pais":"Argentina 🇦🇷",      "tipo":"Edición Especial"},
+            {"id":"CC12", "jugador":"Cristiano Ronaldo",   "pais":"Portugal 🇵🇹",       "tipo":"Edición Especial"},
         ]
     },
     "CRUMPLE": {
-        "nombre": "Crumple & Gold Flood ✨",
+        "nombre": "Edición Limitada ✨",
         "color": "green",
-        "descripcion": "Exclusivos online de Panini y Amazon",
+        "descripcion": "Exclusivos online de Stickers y Amazon",
         "estampas": [
-            {"id":"GC-MESSI",   "jugador":"Messi Gold Crumple",      "pais":"Argentina 🇦🇷",    "tipo":"Gold Crumple"},
-            {"id":"GC-CR7",     "jugador":"Ronaldo Gold Crumple",    "pais":"Portugal 🇵🇹",     "tipo":"Gold Crumple"},
-            {"id":"GC-YML",     "jugador":"Yamal Gold Crumple",      "pais":"España 🇪🇸",       "tipo":"Gold Crumple"},
-            {"id":"GC-MBP",     "jugador":"Mbappé Gold Crumple",     "pais":"Francia 🇫🇷",      "tipo":"Gold Crumple"},
-            {"id":"GC-VIN",     "jugador":"Vinicius Gold Crumple",   "pais":"Brasil 🇧🇷",       "tipo":"Gold Crumple"},
-            {"id":"GC-HAA",     "jugador":"Haaland Gold Crumple",    "pais":"Noruega 🇳🇴",      "tipo":"Gold Crumple"},
-            {"id":"OC-MESSI",   "jugador":"Messi Orange Crumple",    "pais":"Argentina 🇦🇷",    "tipo":"Orange Crumple"},
-            {"id":"OC-CR7",     "jugador":"Ronaldo Orange Crumple",  "pais":"Portugal 🇵🇹",     "tipo":"Orange Crumple"},
-            {"id":"OC-YML",     "jugador":"Yamal Orange Crumple",    "pais":"España 🇪🇸",       "tipo":"Orange Crumple"},
-            {"id":"OC-MBP",     "jugador":"Mbappé Orange Crumple",   "pais":"Francia 🇫🇷",      "tipo":"Orange Crumple"},
-            {"id":"OC-BEL",     "jugador":"Bellingham Orange Crumple","pais":"Inglaterra 🏴󠁧󠁢󠁥󠁮󠁧󠁿", "tipo":"Orange Crumple"},
-            {"id":"OC-VIN",     "jugador":"Vinicius Orange Crumple", "pais":"Brasil 🇧🇷",       "tipo":"Orange Crumple"},
+            {"id":"GC-MESSI",   "jugador":"Messi Edición Oro",      "pais":"Argentina 🇦🇷",    "tipo":"Edición Oro"},
+            {"id":"GC-CR7",     "jugador":"Ronaldo Edición Oro",    "pais":"Portugal 🇵🇹",     "tipo":"Edición Oro"},
+            {"id":"GC-YML",     "jugador":"Yamal Edición Oro",      "pais":"España 🇪🇸",       "tipo":"Edición Oro"},
+            {"id":"GC-MBP",     "jugador":"Mbappé Edición Oro",     "pais":"Francia 🇫🇷",      "tipo":"Edición Oro"},
+            {"id":"GC-VIN",     "jugador":"Vinicius Edición Oro",   "pais":"Brasil 🇧🇷",       "tipo":"Edición Oro"},
+            {"id":"GC-HAA",     "jugador":"Haaland Edición Oro",    "pais":"Noruega 🇳🇴",      "tipo":"Edición Oro"},
+            {"id":"OC-MESSI",   "jugador":"Messi Edición Naranja",    "pais":"Argentina 🇦🇷",    "tipo":"Edición Naranja"},
+            {"id":"OC-CR7",     "jugador":"Ronaldo Edición Naranja",  "pais":"Portugal 🇵🇹",     "tipo":"Edición Naranja"},
+            {"id":"OC-YML",     "jugador":"Yamal Edición Naranja",    "pais":"España 🇪🇸",       "tipo":"Edición Naranja"},
+            {"id":"OC-MBP",     "jugador":"Mbappé Edición Naranja",   "pais":"Francia 🇫🇷",      "tipo":"Edición Naranja"},
+            {"id":"OC-BEL",     "jugador":"Bellingham Edición Naranja","pais":"Inglaterra 🏴󠁧󠁢󠁥󠁮󠁧󠁿", "tipo":"Edición Naranja"},
+            {"id":"OC-VIN",     "jugador":"Vinicius Edición Naranja", "pais":"Brasil 🇧🇷",       "tipo":"Edición Naranja"},
         ]
     },
 }
@@ -297,7 +297,7 @@ def generar_qr_archivo(album, nombre, modo="intercambio"):
           if album.get(f"{c}{i}") not in(TENGO,REPETIDA)]
     if modo=="intercambio":
         # Formato completo para intercambio presencial
-        texto=f"PANINI_MATCH|{MI_ID}|{nombre}|{','.join(reps)}|{','.join(fals[:50])}"
+        texto=f"STICKERS|{MI_ID}|{nombre}|{','.join(reps)}|{','.join(fals[:50])}"
     else:
         texto=f"{nombre}|{','.join(reps)}"
     archivo=os.path.abspath(f"qr_{nombre.replace(' ','_')}.png")
@@ -361,13 +361,13 @@ def main(page: ft.Page):
     album=cargar(); pais_sel=["MEX"]; vista=["album"]
     nombre_u=["Mi Usuario"]; mi_lat,mi_lon=31.7350,-106.4850
 
-    txt_t=ft.Text("0",size=24,weight=ft.FontWeight.BOLD,color=ft.Colors.WHITE)
-    txt_f=ft.Text("20",size=24,weight=ft.FontWeight.BOLD,color=ft.Colors.WHITE)
-    txt_r=ft.Text("0",size=24,weight=ft.FontWeight.BOLD,color=ft.Colors.WHITE)
-    barra=ft.ProgressBar(value=0,bgcolor=ft.Colors.with_opacity(0.15,"#2563EB"),color="#F59E0B",height=14,border_radius=7)
-    txt_prog=ft.Text("0/20",size=12,weight=ft.FontWeight.BOLD,color=ft.Colors.GREY_600)
-    txt_ph=ft.Text("México",size=14,weight=ft.FontWeight.BOLD,color="#FCD34D")
-    txt_ih=ft.Text("[MX]",size=11,color=ft.Colors.with_opacity(0.7,"#FFFFFF"))
+    txt_t=ft.Text("0",size=20,weight=ft.FontWeight.BOLD,color="#10B981")
+    txt_f=ft.Text("20",size=20,weight=ft.FontWeight.BOLD,color=ft.Colors.ORANGE_600)
+    txt_r=ft.Text("0",size=20,weight=ft.FontWeight.BOLD,color=ft.Colors.BLUE_400)
+    barra=ft.ProgressBar(value=0,bgcolor=ft.Colors.with_opacity(0.15,"#2563EB"),color="#F59E0B",height=10,border_radius=5)
+    txt_prog=ft.Text("0/20",size=11,weight=ft.FontWeight.BOLD,color=ft.Colors.GREY_600)
+    txt_ph=ft.Text("México",size=12,weight=ft.FontWeight.BOLD,color="#FCD34D")
+    txt_ih=ft.Text("[MX]",size=10,color=ft.Colors.with_opacity(0.7,"#FFFFFF"))
 
     snack=ft.SnackBar(content=ft.Text(""),bgcolor="#0D1B3E",
         behavior=ft.SnackBarBehavior.FLOATING)
@@ -434,11 +434,13 @@ def main(page: ft.Page):
             bg,fg=estilo(REPETIDA);c=celdas[num];c.bgcolor=bg;c.content.color=fg
             c.border=None;c.shadow=ft.BoxShadow(blur_radius=6,color=ft.Colors.BLACK26,offset=ft.Offset(0,2))
             c.update();upd_cnt(prefix);check()
+        # Tamaño adaptado a móvil: 4 columnas × 5 filas, celdas más compactas
+        CELL_W=56; CELL_H=52; CELL_R=10; FONT_SZ=14; CELL_SPACING=6; ROW_COLS=5
         for i in range(1,21):
             ea=album.get(f"{prefix}{i}",FALTA);bg,fg=estilo(ea)
             cont=ft.Container(
-                content=ft.Text(str(i),color=fg,weight=ft.FontWeight.BOLD,size=15),
-                bgcolor=bg,border_radius=12,width=62,height=62,alignment=ft.Alignment(0,0),
+                content=ft.Text(str(i),color=fg,weight=ft.FontWeight.BOLD,size=FONT_SZ),
+                bgcolor=bg,border_radius=CELL_R,width=CELL_W,height=CELL_H,alignment=ft.Alignment(0,0),
                 border=ft.Border.all(1.5, ft.Colors.with_opacity(0.2,"#2563EB")) if ea==FALTA
                        else (ft.Border.all(2, "#F59E0B") if ea==REPETIDA else ft.Border.all(2, "#10B981")),
                 shadow=ft.BoxShadow(blur_radius=8,
@@ -447,8 +449,8 @@ def main(page: ft.Page):
             celdas[i]=cont
             ctrl.append(ft.GestureDetector(content=cont,on_tap=lambda e,n=i:tap(e,n),on_double_tap=lambda e,n=i:dtap(e,n)))
         filas=[]
-        for f in range(0,20,5): filas.append(ft.Row(ctrl[f:f+5],spacing=8,alignment=ft.MainAxisAlignment.START))
-        return ft.Column(filas,spacing=8)
+        for f in range(0,20,ROW_COLS): filas.append(ft.Row(ctrl[f:f+ROW_COLS],spacing=CELL_SPACING,alignment=ft.MainAxisAlignment.CENTER))
+        return ft.Column(filas,spacing=CELL_SPACING)
 
     def upd_tablero(prefix):
         n,iso=PAISES_DICT.get(prefix,(prefix,"??"))
@@ -706,105 +708,121 @@ def main(page: ft.Page):
 
     # ── VISTA QR ────────────────────────────────────────────────────
     def vista_qr():
+        import io, base64
         txt_st=ft.Text("",size=13,color=ft.Colors.GREY_600,text_align=ft.TextAlign.CENTER)
-        txt_ruta=ft.Text("",size=11,color=ft.Colors.BLUE_600,text_align=ft.TextAlign.CENTER,italic=True)
         res_scan=ft.Column([],spacing=8)
         campo=ft.TextField(label="Tu nombre",value=nombre_u[0],width=260,border_radius=10,bgcolor=ft.Colors.WHITE)
-        escaneando=[False]
+        qr_img=ft.Image(visible=False,width=220,height=220,fit=ft.ImageFit.CONTAIN)
+        txt_qr_data=ft.Text("",size=0,visible=False)  # guarda datos del QR para pegar/compartir
 
         def gen(e):
             nombre_u[0]=campo.value or "Mi Usuario"
             try:
-                ruta, texto_qr = generar_qr_archivo(album, nombre_u[0], modo="intercambio")
-                txt_st.value=f"✅ QR generado para: {nombre_u[0]}"
+                reps=[k for k,v in album.items() if v==REPETIDA]
+                fals=[f"{c}{i}" for c,_,_ in PAISES for i in range(1,21)
+                      if album.get(f"{c}{i}") not in(TENGO,REPETIDA)]
+                texto_qr=f"STICKERS|{MI_ID}|{nombre_u[0]}|{','.join(reps)}|{','.join(fals[:50])}"
+                # Generar QR en memoria (sin guardar archivo)
+                qr=qrcode.QRCode(version=None,error_correction=qrcode.constants.ERROR_CORRECT_L,box_size=8,border=3)
+                qr.add_data(texto_qr); qr.make(fit=True)
+                img=qr.make_image(fill_color="black",back_color="white")
+                buf=io.BytesIO(); img.save(buf,format="PNG")
+                b64=base64.b64encode(buf.getvalue()).decode()
+                qr_img.src_base64=b64; qr_img.visible=True
+                txt_qr_data.value=texto_qr
+                txt_st.value=f"✅ QR listo — muéstraselo a la otra persona"
                 txt_st.color=ft.Colors.GREEN_700
-                txt_ruta.value=f"📁 {ruta}"
-                subprocess.Popen(["cmd","/c","start","",ruta])
             except Exception as ex:
                 txt_st.value=f"❌ Error: {ex}"; txt_st.color=ft.Colors.RED_700
-            try: txt_st.update();txt_ruta.update()
+            try: txt_st.update();qr_img.update();page.update()
             except: pass
 
-        def scan(e):
-            if escaneando[0]: return
-            escaneando[0]=True
-            txt_st.value="📷 Abriendo cámara... presiona Q para cancelar"
-            txt_st.color=ft.Colors.BLUE_600
-            try: txt_st.update()
+        def procesar_qr_texto(leido):
+            """Procesa el texto del QR y muestra resultado de intercambio."""
+            if leido.startswith("STICKERS|"):
+                partes=leido.split("|")
+                nom=partes[2] if len(partes)>2 else "Otro"
+                reps=partes[3].split(",") if len(partes)>3 and partes[3] else []
+            else:
+                partes=leido.split("|",1)
+                nom=partes[0]
+                reps=partes[1].split(",") if len(partes)>1 and partes[1] else []
+
+            me_da,le_doy=intercambio_qr(album,reps)
+            txt_st.value=f"✅ QR de {nom} leído"; txt_st.color=ft.Colors.GREEN_700
+
+            res_scan.controls.clear()
+            res_scan.controls.append(
+                ft.Container(padding=16,border_radius=14,bgcolor=ft.Colors.WHITE,
+                    border=ft.Border.all(1.5,ft.Colors.BLUE_200),
+                    shadow=ft.BoxShadow(blur_radius=8,color=ft.Colors.BLACK12,offset=ft.Offset(0,2)),
+                    content=ft.Column([
+                        ft.Row([ft.Icon(ft.Icons.SWAP_HORIZ,color=ft.Colors.BLUE_600,size=22),
+                            ft.Text(f"Intercambio con {nom}",size=16,weight=ft.FontWeight.BOLD,color=ft.Colors.BLUE_GREY_900)],spacing=8),
+                        ft.Divider(height=8,color=ft.Colors.GREY_100),
+                        ft.Container(bgcolor=ft.Colors.GREEN_50,border_radius=10,padding=12,
+                            content=ft.Column([
+                                ft.Row([ft.Icon(ft.Icons.ARROW_DOWNWARD,color=ft.Colors.GREEN_700,size=16),
+                                    ft.Text(f"Recibes ({len(me_da)} estampas)",size=13,weight=ft.FontWeight.BOLD,color=ft.Colors.GREEN_700)]),
+                                ft.Text(", ".join(me_da) if me_da else "Ninguna",size=13,color=ft.Colors.GREEN_900),
+                            ],spacing=4)),
+                        ft.Container(bgcolor=ft.Colors.BLUE_50,border_radius=10,padding=12,
+                            content=ft.Column([
+                                ft.Row([ft.Icon(ft.Icons.ARROW_UPWARD,color=ft.Colors.BLUE_700,size=16),
+                                    ft.Text(f"Das ({len(le_doy)} estampas)",size=13,weight=ft.FontWeight.BOLD,color=ft.Colors.BLUE_700)]),
+                                ft.Text(", ".join(le_doy) if le_doy else "Ninguna",size=13,color=ft.Colors.BLUE_900),
+                            ],spacing=4)),
+                        ft.Divider(height=8,color=ft.Colors.GREY_100),
+                        ft.Button(
+                            content=ft.Row([
+                                ft.Icon(ft.Icons.CHECK_CIRCLE,color=ft.Colors.WHITE,size=18),
+                                ft.Text("✅ Confirmar Intercambio",color=ft.Colors.WHITE,weight=ft.FontWeight.BOLD,size=14),
+                            ],tight=True,spacing=8),
+                            on_click=lambda e,md=me_da,ld=le_doy,n=nom: confirmar_intercambio(md,ld,n),
+                            style=ft.ButtonStyle(bgcolor=ft.Colors.GREEN_600,color=ft.Colors.WHITE,
+                                padding=ft.Padding(16,12,16,12),shape=ft.RoundedRectangleBorder(radius=12),elevation=4),
+                        ),
+                    ],spacing=10))
+            )
+            try: txt_st.update();res_scan.update();page.update()
             except: pass
-            def _scan():
-                try:
-                    cap=cv2.VideoCapture(0);det=cv2.QRCodeDetector();leido=None
-                    for _ in range(300):
-                        ret,frame=cap.read()
-                        if not ret: break
-                        cv2.imshow("Escanear QR — Q para cancelar",frame)
-                        leido,_,_=det.detectAndDecode(frame)
-                        if leido: break
-                        if cv2.waitKey(1)&0xFF==ord('q'): break
-                    cap.release();cv2.destroyAllWindows()
-                    if leido:
-                        # Detectar formato PANINI_MATCH (intercambio presencial)
-                        if leido.startswith("PANINI_MATCH|"):
-                            partes=leido.split("|")
-                            uid_otro=partes[1] if len(partes)>1 else "?"
-                            nom=partes[2] if len(partes)>2 else "Otro"
-                            reps=partes[3].split(",") if len(partes)>3 and partes[3] else []
-                            fals=partes[4].split(",") if len(partes)>4 and partes[4] else []
-                        else:
-                            partes=leido.split("|",1)
-                            nom=partes[0]; uid_otro="?"
-                            reps=partes[1].split(",") if len(partes)>1 and partes[1] else []
-                            fals=[]
 
-                        me_da,le_doy=intercambio_qr(album,reps)
-                        txt_st.value=f"✅ QR de {nom} escaneado"; txt_st.color=ft.Colors.GREEN_700
-
-                        res_scan.controls.clear()
-                        res_scan.controls.append(
-                            ft.Container(padding=16,border_radius=14,bgcolor=ft.Colors.WHITE,
-                                border=ft.Border.all(1.5,ft.Colors.BLUE_200),
-                                shadow=ft.BoxShadow(blur_radius=8,color=ft.Colors.BLACK12,offset=ft.Offset(0,2)),
-                                content=ft.Column([
-                                    ft.Row([ft.Icon(ft.Icons.SWAP_HORIZ,color=ft.Colors.BLUE_600,size=22),
-                                        ft.Text(f"Intercambio con {nom}",size=16,weight=ft.FontWeight.BOLD,color=ft.Colors.BLUE_GREY_900)],spacing=8),
-                                    ft.Divider(height=8,color=ft.Colors.GREY_100),
-                                    ft.Container(bgcolor=ft.Colors.GREEN_50,border_radius=10,padding=12,
-                                        content=ft.Column([
-                                            ft.Row([ft.Icon(ft.Icons.ARROW_DOWNWARD,color=ft.Colors.GREEN_700,size=16),
-                                                ft.Text(f"Recibes ({len(me_da)} estampas)",size=13,weight=ft.FontWeight.BOLD,color=ft.Colors.GREEN_700)]),
-                                            ft.Text(", ".join(me_da) if me_da else "Ninguna",size=13,color=ft.Colors.GREEN_900),
-                                        ],spacing=4)),
-                                    ft.Container(bgcolor=ft.Colors.BLUE_50,border_radius=10,padding=12,
-                                        content=ft.Column([
-                                            ft.Row([ft.Icon(ft.Icons.ARROW_UPWARD,color=ft.Colors.BLUE_700,size=16),
-                                                ft.Text(f"Das ({len(le_doy)} estampas)",size=13,weight=ft.FontWeight.BOLD,color=ft.Colors.BLUE_700)]),
-                                            ft.Text(", ".join(le_doy) if le_doy else "Ninguna",size=13,color=ft.Colors.BLUE_900),
-                                        ],spacing=4)),
-                                    ft.Divider(height=8,color=ft.Colors.GREY_100),
-                                    ft.Button(
-                                        content=ft.Row([
-                                            ft.Icon(ft.Icons.CHECK_CIRCLE,color=ft.Colors.WHITE,size=18),
-                                            ft.Text("✅ Confirmar Intercambio y Actualizar Álbum",
-                                                color=ft.Colors.WHITE,weight=ft.FontWeight.BOLD,size=14),
-                                        ],tight=True,spacing=8),
-                                        on_click=lambda e,md=me_da,ld=le_doy,n=nom: confirmar_intercambio(md,ld,n),
-                                        style=ft.ButtonStyle(
-                                            bgcolor=ft.Colors.GREEN_600,color=ft.Colors.WHITE,
-                                            padding=ft.Padding(16,12,16,12),
-                                            shape=ft.RoundedRectangleBorder(radius=12),elevation=4),
-                                    ),
-                                ],spacing=10))
-                        )
-                    else:
-                        txt_st.value="⚠️ No se detectó ningún QR"; txt_st.color=ft.Colors.ORANGE_700
-                except Exception as ex:
-                    txt_st.value=f"❌ Error cámara: {ex}"; txt_st.color=ft.Colors.RED_700
-                finally:
-                    escaneando[0]=False
-                    try: txt_st.update();res_scan.update();page.update()
+        def pegar_qr(e):
+            """El usuario pega manualmente el texto QR de la otra persona."""
+            campo_pegar=ft.TextField(
+                label="Pega aquí el texto QR de la otra persona",
+                multiline=True,min_lines=3,max_lines=5,
+                border_radius=10,bgcolor=ft.Colors.WHITE,width=320)
+            def leer(ev):
+                txt=campo_pegar.value.strip()
+                if txt:
+                    dlg.open=False; page.update()
+                    procesar_qr_texto(txt)
+                else:
+                    campo_pegar.error_text="Pega el texto del QR primero"
+                    try: campo_pegar.update()
                     except: pass
-            threading.Thread(target=_scan,daemon=True).start()
+            dlg=ft.AlertDialog(
+                modal=True,bgcolor=ft.Colors.WHITE,shape=ft.RoundedRectangleBorder(radius=16),
+                title=ft.Text("Pegar código QR",weight=ft.FontWeight.BOLD,size=16),
+                content=ft.Container(width=340,content=ft.Column([
+                    ft.Text("Pide a la otra persona que copie su código QR y te lo mande por WhatsApp.",
+                        size=13,color=ft.Colors.GREY_600),
+                    campo_pegar,
+                ],spacing=10)),
+                actions=[
+                    ft.Button(content=ft.Text("Cancelar",color=ft.Colors.GREY_700),
+                        on_click=lambda e: cerrar(dlg),
+                        style=ft.ButtonStyle(bgcolor=ft.Colors.GREY_200,padding=ft.Padding(16,10,16,10),
+                            shape=ft.RoundedRectangleBorder(radius=10))),
+                    ft.Button(content=ft.Text("Leer QR",color=ft.Colors.WHITE,weight=ft.FontWeight.BOLD),
+                        on_click=leer,
+                        style=ft.ButtonStyle(bgcolor=ft.Colors.BLUE_600,color=ft.Colors.WHITE,
+                            padding=ft.Padding(16,10,16,10),shape=ft.RoundedRectangleBorder(radius=10))),
+                ],
+                actions_alignment=ft.MainAxisAlignment.END,
+            )
+            page.overlay.append(dlg); dlg.open=True; page.update()
 
         def confirmar_intercambio(me_da, le_doy, nombre_otro):
             if not me_da and not le_doy:
@@ -887,9 +905,9 @@ def main(page: ft.Page):
             ft.Text("Generar mi QR",color=ft.Colors.WHITE,weight=ft.FontWeight.BOLD)],tight=True,spacing=8),
             on_click=gen,style=ft.ButtonStyle(bgcolor=ft.Colors.BLUE_600,color=ft.Colors.WHITE,
                 padding=ft.Padding(20,12,20,12),shape=ft.RoundedRectangleBorder(radius=12),elevation=4))
-        btn_scan=ft.Button(content=ft.Row([ft.Icon(ft.Icons.QR_CODE_SCANNER,color=ft.Colors.WHITE),
-            ft.Text("Escanear QR de otro",color=ft.Colors.WHITE,weight=ft.FontWeight.BOLD)],tight=True,spacing=8),
-            on_click=scan,style=ft.ButtonStyle(bgcolor=ft.Colors.PURPLE_600,color=ft.Colors.WHITE,
+        btn_pegar=ft.Button(content=ft.Row([ft.Icon(ft.Icons.CONTENT_PASTE,color=ft.Colors.WHITE),
+            ft.Text("Leer QR de otro",color=ft.Colors.WHITE,weight=ft.FontWeight.BOLD)],tight=True,spacing=8),
+            on_click=pegar_qr,style=ft.ButtonStyle(bgcolor=ft.Colors.PURPLE_600,color=ft.Colors.WHITE,
                 padding=ft.Padding(20,12,20,12),shape=ft.RoundedRectangleBorder(radius=12),elevation=4))
 
         return ft.Container(padding=ft.Padding(20,16,20,24),content=ft.Column([
@@ -901,23 +919,26 @@ def main(page: ft.Page):
                     ft.Container(padding=10,border_radius=10,bgcolor=ft.Colors.BLUE_50,
                         border=ft.Border.all(1,ft.Colors.BLUE_100),
                         content=ft.Column([
-                            ft.Text("📋 Cómo funciona el intercambio presencial:",size=12,weight=ft.FontWeight.BOLD,color=ft.Colors.BLUE_800),
-                            ft.Text("1️⃣  Genera tu QR y compártelo por WhatsApp",size=12,color=ft.Colors.BLUE_700),
-                            ft.Text("2️⃣  Cuando se vean, escanea el QR del otro",size=12,color=ft.Colors.BLUE_700),
-                            ft.Text("3️⃣  Confirma el intercambio — el álbum se actualiza solo 🎯",size=12,color=ft.Colors.BLUE_700),
+                            ft.Text("📋 Cómo intercambiar:",size=12,weight=ft.FontWeight.BOLD,color=ft.Colors.BLUE_800),
+                            ft.Text("1️⃣  Genera tu QR y toma captura de pantalla",size=12,color=ft.Colors.BLUE_700),
+                            ft.Text("2️⃣  Mándasela por WhatsApp a la otra persona",size=12,color=ft.Colors.BLUE_700),
+                            ft.Text("3️⃣  Pídele que haga lo mismo y pega su código aquí",size=12,color=ft.Colors.BLUE_700),
+                            ft.Text("4️⃣  Confirma el intercambio — el álbum se actualiza solo 🎯",size=12,color=ft.Colors.BLUE_700),
                         ],spacing=3)),
                     campo,
                     ft.Row([btn_gen],alignment=ft.MainAxisAlignment.CENTER),
+                    ft.Row([qr_img],alignment=ft.MainAxisAlignment.CENTER),
                     ft.Row([txt_st],alignment=ft.MainAxisAlignment.CENTER),
-                    ft.Row([txt_ruta],alignment=ft.MainAxisAlignment.CENTER),
                 ],spacing=12)),
             ft.Divider(height=10,color=ft.Colors.TRANSPARENT),
             ft.Container(padding=20,bgcolor=ft.Colors.WHITE,border_radius=18,
                 shadow=ft.BoxShadow(blur_radius=12,color=ft.Colors.BLACK12,offset=ft.Offset(0,3)),
                 content=ft.Column([
-                    ft.Row([ft.Icon(ft.Icons.QR_CODE_SCANNER,color=ft.Colors.PURPLE_600,size=22),
-                        ft.Text("Escanear QR",size=17,weight=ft.FontWeight.BOLD,color=ft.Colors.BLUE_GREY_800)],spacing=8),
-                    ft.Row([btn_scan],alignment=ft.MainAxisAlignment.CENTER),
+                    ft.Row([ft.Icon(ft.Icons.CONTENT_PASTE,color=ft.Colors.PURPLE_600,size=22),
+                        ft.Text("Leer QR de otro",size=17,weight=ft.FontWeight.BOLD,color=ft.Colors.BLUE_GREY_800)],spacing=8),
+                    ft.Text("La otra persona genera su QR, lo copia como texto y te lo manda por WhatsApp.",
+                        size=12,color=ft.Colors.GREY_600),
+                    ft.Row([btn_pegar],alignment=ft.MainAxisAlignment.CENTER),
                     res_scan,
                 ],spacing=12)),
         ],spacing=10,scroll=ft.ScrollMode.AUTO))
@@ -1856,7 +1877,7 @@ def main(page: ft.Page):
             "ICONOS":   ("Íconos ⭐",    ft.Colors.AMBER_600),
             "MUSEO":    ("Museum 🏆",    ft.Colors.PURPLE_600),
             "PARALLELS":("Parallels 🎨", ft.Colors.BLUE_600),
-            "COCACOLA": ("Coca-Cola 🥤", ft.Colors.RED_600),
+            "COCACOLA": ("Especial 🥤", ft.Colors.RED_600),
             "CRUMPLE":  ("Crumple ✨",   ft.Colors.GREEN_600),
         }
 
@@ -2115,7 +2136,7 @@ def main(page: ft.Page):
             chip_filtro("ICONOS", "Íconos ⭐", ft.Colors.AMBER_600),
             chip_filtro("MUSEO", "Museum 🏆", ft.Colors.PURPLE_600),
             chip_filtro("PARALLELS", "Parallels 🎨", ft.Colors.BLUE_600),
-            chip_filtro("COCACOLA", "Coca-Cola 🥤", ft.Colors.RED_600),
+            chip_filtro("COCACOLA", "Especial 🥤", ft.Colors.RED_600),
             chip_filtro("CRUMPLE", "Crumple ✨", ft.Colors.GREEN_600),
         ], spacing=6, scroll=ft.ScrollMode.AUTO)
 
@@ -2206,8 +2227,12 @@ def main(page: ft.Page):
 
     def cambiar(nueva):
         vista[0]=nueva
-        for b,v in [(btn_al,"album"),(btn_st,"stats"),(btn_qr,"qr"),(btn_gr,"grupos"),(btn_esp,"especiales"),(btn_rep,"reputacion"),(btn_ev,"eventos"),(btn_notif,"notificaciones"),(btn_mkt,"mercado")]:
-            b.style.bgcolor="#F59E0B" if nueva==v else ft.Colors.with_opacity(0.2,"#FFFFFF")
+        # Sincronizar índice del NavigationBar
+        _sec_to_idx = {"album":0,"stats":1,"qr":2,"grupos":3}
+        if nueva in _sec_to_idx:
+            nav_bar.selected_index = _sec_to_idx[nueva]
+            try: nav_bar.update()
+            except: pass
         if nueva=="album": vista_c.content=vista_album();upd_tablero(pais_sel[0])
         elif nueva=="stats": vista_c.content=vista_stats()
         elif nueva=="qr": vista_c.content=vista_qr()
@@ -2217,8 +2242,6 @@ def main(page: ft.Page):
         elif nueva=="eventos": vista_c.content=vista_eventos()
         elif nueva=="notificaciones": vista_c.content=vista_notificaciones()
         elif nueva=="mercado": vista_c.content=vista_mercado()
-        try: btn_al.update();btn_st.update();btn_qr.update();btn_gr.update();btn_esp.update();btn_rep.update();btn_ev.update();btn_notif.update();btn_mkt.update()
-        except: pass
         try: vista_c.update()
         except: pass
         page.update()
@@ -2317,38 +2340,25 @@ def main(page: ft.Page):
         import threading
         threading.Thread(target=_buscar, daemon=True).start()
 
-    btn_al=ft.Button(content=ft.Row([ft.Icon(ft.Icons.GRID_VIEW,color=ft.Colors.WHITE,size=14),
-        ft.Text("Álbum",color=ft.Colors.WHITE,weight=ft.FontWeight.BOLD,size=12)],tight=True,spacing=4),
-        on_click=lambda e:cambiar("album"),style=ft.ButtonStyle(bgcolor="#2563EB",color=ft.Colors.WHITE,
-            padding=ft.Padding(10,8,10,8),shape=ft.RoundedRectangleBorder(radius=8)))
-    btn_st=ft.Button(content=ft.Row([ft.Icon(ft.Icons.BAR_CHART,color=ft.Colors.WHITE,size=14),
-        ft.Text("Stats",color=ft.Colors.WHITE,weight=ft.FontWeight.BOLD,size=12)],tight=True,spacing=4),
-        on_click=lambda e:cambiar("stats"),style=ft.ButtonStyle(bgcolor=ft.Colors.with_opacity(0.25,"#FFFFFF"),color=ft.Colors.WHITE,
-            padding=ft.Padding(10,8,10,8),shape=ft.RoundedRectangleBorder(radius=8)))
-    btn_qr=ft.Button(content=ft.Row([ft.Icon(ft.Icons.QR_CODE_SCANNER,color=ft.Colors.WHITE,size=14),
-        ft.Text("QR",color=ft.Colors.WHITE,weight=ft.FontWeight.BOLD,size=12)],tight=True,spacing=4),
-        on_click=lambda e:cambiar("qr"),style=ft.ButtonStyle(bgcolor=ft.Colors.with_opacity(0.25,"#FFFFFF"),color=ft.Colors.WHITE,
-            padding=ft.Padding(10,8,10,8),shape=ft.RoundedRectangleBorder(radius=8)))
-    btn_gr=ft.Button(content=ft.Row([ft.Icon(ft.Icons.GROUP_WORK,color=ft.Colors.WHITE,size=14),
-        ft.Text("Grupos",color=ft.Colors.WHITE,weight=ft.FontWeight.BOLD,size=12)],tight=True,spacing=4),
-        on_click=lambda e:cambiar("grupos"),style=ft.ButtonStyle(bgcolor=ft.Colors.with_opacity(0.25,"#FFFFFF"),color=ft.Colors.WHITE,
-            padding=ft.Padding(10,8,10,8),shape=ft.RoundedRectangleBorder(radius=8)))
+    # ── NAVEGACIÓN INFERIOR (móvil) ──────────────────────────────────
+    # Las 9 secciones se agrupan en 5 tabs visibles; el resto en un menú "Más"
+    TABS_PRINCIPALES = [
+        ("album",        ft.Icons.GRID_VIEW,      "Álbum"),
+        ("stats",        ft.Icons.BAR_CHART,       "Stats"),
+        ("qr",           ft.Icons.QR_CODE_SCANNER, "QR"),
+        ("grupos",       ft.Icons.GROUP_WORK,      "Grupos"),
+        ("mas",          ft.Icons.MORE_HORIZ,      "Más"),
+    ]
+    MAS_OPCIONES = [
+        ("especiales",    ft.Icons.STAR,          "Especiales"),
+        ("reputacion",    ft.Icons.STAR_RATE,      "Reputación"),
+        ("eventos",       ft.Icons.EVENT,          "Eventos"),
+        ("notificaciones",ft.Icons.NOTIFICATIONS,  "Alertas"),
+        ("mercado",       ft.Icons.STOREFRONT,     "Mercado"),
+    ]
 
-    btn_esp=ft.Button(content=ft.Row([ft.Icon(ft.Icons.STAR,color=ft.Colors.WHITE,size=14),
-        ft.Text("Especiales",color=ft.Colors.WHITE,weight=ft.FontWeight.BOLD,size=12)],tight=True,spacing=4),
-        on_click=lambda e:cambiar("especiales"),style=ft.ButtonStyle(bgcolor=ft.Colors.with_opacity(0.25,"#FFFFFF"),color=ft.Colors.WHITE,
-            padding=ft.Padding(10,8,10,8),shape=ft.RoundedRectangleBorder(radius=8)))
-    btn_rep=ft.Button(content=ft.Row([ft.Icon(ft.Icons.STAR_RATE,color=ft.Colors.WHITE,size=14),
-        ft.Text("Rep.",color=ft.Colors.WHITE,weight=ft.FontWeight.BOLD,size=12)],tight=True,spacing=4),
-        on_click=lambda e:cambiar("reputacion"),style=ft.ButtonStyle(bgcolor=ft.Colors.with_opacity(0.25,"#FFFFFF"),color=ft.Colors.WHITE,
-            padding=ft.Padding(10,8,10,8),shape=ft.RoundedRectangleBorder(radius=8)))
-    btn_ev=ft.Button(content=ft.Row([ft.Icon(ft.Icons.EVENT,color=ft.Colors.WHITE,size=14),
-        ft.Text("Eventos",color=ft.Colors.WHITE,weight=ft.FontWeight.BOLD,size=12)],tight=True,spacing=4),
-        on_click=lambda e:cambiar("eventos"),style=ft.ButtonStyle(bgcolor=ft.Colors.with_opacity(0.25,"#FFFFFF"),color=ft.Colors.WHITE,
-            padding=ft.Padding(10,8,10,8),shape=ft.RoundedRectangleBorder(radius=8)))
-
-    badge_notif=ft.Text("",size=10,color=ft.Colors.WHITE,weight=ft.FontWeight.BOLD)
-    badge_container=ft.Container(width=18,height=18,border_radius=9,bgcolor=ft.Colors.RED_500,
+    badge_notif=ft.Text("",size=9,color=ft.Colors.WHITE,weight=ft.FontWeight.BOLD)
+    badge_container=ft.Container(width=16,height=16,border_radius=8,bgcolor=ft.Colors.RED_500,
         alignment=ft.Alignment(0,0),content=badge_notif,visible=False)
 
     def actualizar_badge_notif():
@@ -2357,16 +2367,6 @@ def main(page: ft.Page):
         badge_container.visible=(n>0)
         try: badge_notif.update();badge_container.update()
         except: pass
-
-    btn_notif=ft.Button(
-        content=ft.Stack([
-            ft.Row([ft.Icon(ft.Icons.NOTIFICATIONS,color=ft.Colors.WHITE,size=14),
-                ft.Text("Alertas",color=ft.Colors.WHITE,weight=ft.FontWeight.BOLD,size=12)],tight=True,spacing=4),
-            ft.Container(content=badge_container,right=0,top=0),
-        ],width=80,height=30),
-        on_click=lambda e:cambiar("notificaciones"),
-        style=ft.ButtonStyle(bgcolor=ft.Colors.with_opacity(0.25,"#FFFFFF"),color=ft.Colors.WHITE,
-            padding=ft.Padding(10,8,10,8),shape=ft.RoundedRectangleBorder(radius=8)))
 
     # Monitor en segundo plano para notificaciones automáticas
     def monitor_notificaciones():
@@ -2403,78 +2403,124 @@ def main(page: ft.Page):
     _th.Thread(target=monitor_notificaciones, daemon=True).start()
     actualizar_badge_notif()
 
-    btn_mkt=ft.Button(content=ft.Row([ft.Icon(ft.Icons.STOREFRONT,color=ft.Colors.WHITE,size=14),
-        ft.Text("Mercado",color=ft.Colors.WHITE,weight=ft.FontWeight.BOLD,size=12)],tight=True,spacing=4),
-        on_click=lambda e:cambiar("mercado"),style=ft.ButtonStyle(bgcolor=ft.Colors.with_opacity(0.25,"#FFFFFF"),color=ft.Colors.WHITE,
-            padding=ft.Padding(10,8,10,8),shape=ft.RoundedRectangleBorder(radius=8)))
-    nav=ft.Container(
-        gradient=ft.LinearGradient(
-            begin=ft.Alignment(-1,0), end=ft.Alignment(1,0),
-            colors=["#0D1B3E", "#1A3A6B"],
-        ),
-        padding=ft.Padding(12,8,12,8),
-        shadow=ft.BoxShadow(blur_radius=10, color=ft.Colors.with_opacity(0.3,"#000000"), offset=ft.Offset(0,3)),
-        content=ft.Row([btn_al,btn_st,btn_qr,btn_gr,btn_esp,btn_rep,btn_ev,btn_notif,btn_mkt],
-            spacing=6, scroll=ft.ScrollMode.AUTO))
+    def mostrar_menu_mas(e):
+        """Abre bottom sheet con las secciones secundarias."""
+        opciones_controls = []
+        for seccion, icono, etiqueta in MAS_OPCIONES:
+            def _nav(ev, s=seccion):
+                bs_mas.open = False; page.update()
+                cambiar(s)
+            opciones_controls.append(
+                ft.ListTile(
+                    leading=ft.Icon(icono, color="#2563EB", size=24),
+                    title=ft.Text(etiqueta, size=15, weight=ft.FontWeight.W_600),
+                    on_click=_nav,
+                    min_vertical_padding=14,
+                )
+            )
+        bs_mas = ft.BottomSheet(
+            content=ft.Container(
+                padding=ft.Padding(0, 12, 0, 24),
+                content=ft.Column(
+                    [ft.Container(
+                        width=40, height=4, border_radius=2,
+                        bgcolor=ft.Colors.GREY_300,
+                        margin=ft.Margin(0,0,0,8),
+                    )] + opciones_controls,
+                    spacing=0,
+                    horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                    tight=True,
+                ),
+            ),
+            bgcolor=ft.Colors.WHITE,
+        )
+        page.overlay.append(bs_mas)
+        bs_mas.open = True
+        page.update()
+
+    nav_tab_idx = [0]
+    TAB_SECCIONES = ["album","stats","qr","grupos","mas"]
+
+    def _build_nav():
+        dest = []
+        for sec, icon, label in TABS_PRINCIPALES:
+            dest.append(ft.NavigationBarDestination(
+                icon=icon,
+                label=label,
+            ))
+        return dest
+
+    def on_nav_change(e):
+        idx = e.control.selected_index
+        nav_tab_idx[0] = idx
+        sec = TAB_SECCIONES[idx]
+        if sec == "mas":
+            mostrar_menu_mas(e)
+            # Mantener el tab anterior activo visualmente
+            nav_bar.selected_index = nav_tab_idx[0]
+            try: nav_bar.update()
+            except: pass
+        else:
+            nav_tab_idx[0] = idx
+            cambiar(sec)
+
+    nav_bar = ft.NavigationBar(
+        destinations=_build_nav(),
+        selected_index=0,
+        bgcolor=ft.Colors.WHITE,
+        indicator_color=ft.Colors.with_opacity(0.15, "#2563EB"),
+        shadow_color=ft.Colors.with_opacity(0.15, "#000000"),
+        elevation=12,
+        on_change=on_nav_change,
+    )
+
+    # Botones legacy (usados internamente en cambiar() para resaltar estado activo)
+    btn_al=ft.Button(visible=False)
+    btn_st=ft.Button(visible=False)
+    btn_qr=ft.Button(visible=False)
+    btn_gr=ft.Button(visible=False)
+    btn_esp=ft.Button(visible=False)
+    btn_rep=ft.Button(visible=False)
+    btn_ev=ft.Button(visible=False)
+    btn_notif=ft.Button(visible=False)
+    btn_mkt=ft.Button(visible=False)
     header=ft.Container(
-        padding=ft.Padding(12,10,16,10),
+        padding=ft.Padding(10,8,12,8),
         gradient=ft.LinearGradient(
             begin=ft.Alignment(-1,-1), end=ft.Alignment(1,1),
             colors=["#0D1B3E", "#1A3A6B", "#2563EB"],
         ),
-        shadow=ft.BoxShadow(blur_radius=20, color=ft.Colors.with_opacity(0.4,"#000000"), offset=ft.Offset(0,4)),
+        shadow=ft.BoxShadow(blur_radius=16, color=ft.Colors.with_opacity(0.4,"#000000"), offset=ft.Offset(0,3)),
         content=ft.Row([
-            # Logo real de la app
             ft.Row([
-                ft.Text("⚽", size=42),
-                ft.Container(
-                    width=36, height=46, border_radius=6,
-                    bgcolor="#FFFFFF",
-                    border=ft.Border.all(2, "#F59E0B"),
-                    shadow=ft.BoxShadow(blur_radius=6, color=ft.Colors.with_opacity(0.4,"#000000"), offset=ft.Offset(2,2)),
-                    alignment=ft.Alignment(0,0),
-                    content=ft.Column([
-                        ft.Container(width=28, height=18,
-                            bgcolor="#2563EB",
-                            border_radius=ft.BorderRadius(4,4,0,0),
-                            alignment=ft.Alignment(0,0),
-                            content=ft.Icon(ft.Icons.PERSON, color="#FFFFFF", size=14)),
-                        ft.Container(width=28, height=2, bgcolor="#F59E0B"),
-                        ft.Container(width=28, height=22,
-                            bgcolor="#F0F4FF",
-                            border_radius=ft.BorderRadius(0,0,4,4),
-                            alignment=ft.Alignment(0,0),
-                            content=ft.Text("⭐", size=12)),
-                    ], spacing=0, horizontal_alignment=ft.CrossAxisAlignment.CENTER),
-                ),
+                ft.Text("⚽", size=28),
+                ft.Column([
+                    ft.Text("STICKERS", size=18, weight=ft.FontWeight.BOLD, color="#FCD34D"),
+                    ft.Text("INTERCAMBIO DE ESTAMPAS", size=8, color=ft.Colors.with_opacity(0.8,"#FFFFFF"),
+                        weight=ft.FontWeight.BOLD),
+                ], spacing=1),
             ], spacing=6, vertical_alignment=ft.CrossAxisAlignment.CENTER),
-            ft.Column([
-                ft.Text("STICKERS", size=22, weight=ft.FontWeight.BOLD,
-                    color="#FCD34D"),
-                ft.Row([
-                    ft.Container(width=16, height=2,
-                        gradient=ft.LinearGradient(colors=["#F59E0B","#FCD34D"])),
-                    ft.Text("  INTERCAMBIO DE ESTAMPAS  ", size=9,
-                        color="#FFFFFF", weight=ft.FontWeight.BOLD),
-                    ft.Container(width=16, height=2,
-                        gradient=ft.LinearGradient(colors=["#FCD34D","#F59E0B"])),
-                ], spacing=2, vertical_alignment=ft.CrossAxisAlignment.CENTER),
-            ], spacing=3, expand=True),
+            ft.Container(expand=True),
             ft.Container(
-                padding=ft.Padding(8,5,8,5),
-                border_radius=10,
+                padding=ft.Padding(6,4,6,4),
+                border_radius=8,
                 bgcolor=ft.Colors.with_opacity(0.2, "#FFFFFF"),
                 border=ft.Border.all(1, ft.Colors.with_opacity(0.3, "#F59E0B")),
                 content=ft.Column([
                     txt_ih,
                     txt_ph,
-                ], horizontal_alignment=ft.CrossAxisAlignment.CENTER, spacing=1),
+                ], horizontal_alignment=ft.CrossAxisAlignment.CENTER, spacing=0),
             ),
         ], alignment=ft.MainAxisAlignment.START,
-           vertical_alignment=ft.CrossAxisAlignment.CENTER, spacing=10),
+           vertical_alignment=ft.CrossAxisAlignment.CENTER, spacing=8),
     )
 
-    page.add(ft.Column([header,nav,vista_c],spacing=0))
+    # Layout móvil: header arriba, contenido expandible, nav abajo
+    page.add(ft.Column([
+        header,
+        ft.Container(content=vista_c, expand=True, padding=ft.Padding(0,0,0,0)),
+        nav_bar,
+    ], spacing=0, expand=True))
     cambiar("album")
 
 ft.app(main)
