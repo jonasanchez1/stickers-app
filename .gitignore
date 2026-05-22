@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+logo_splash.png
+assets/
+qr_temp.png
