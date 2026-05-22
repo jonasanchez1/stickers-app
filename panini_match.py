@@ -405,6 +405,24 @@ def _init_app(page: ft.Page):
     album=cargar(); pais_sel=["MEX"]; vista=["album"]
     nombre_u=["Mi Usuario"]; mi_lat,mi_lon=31.7350,-106.4850
 
+    # ── GEOLOCALIZACIÓN AUTOMÁTICA ──────────────────────────────────
+    def obtener_geolocalizacion():
+        """Obtiene ubicación real del usuario via IP como fallback."""
+        import threading as _th_geo
+        def _geo():
+            nonlocal mi_lat, mi_lon
+            try:
+                import requests as _req
+                r = _req.get("https://ipapi.co/json/", timeout=5)
+                data = r.json()
+                if data.get("latitude") and data.get("longitude"):
+                    mi_lat = float(data["latitude"])
+                    mi_lon = float(data["longitude"])
+            except: pass
+        _th_geo.Thread(target=_geo, daemon=True).start()
+
+    obtener_geolocalizacion()
+
     txt_t=ft.Text("0",size=20,weight=ft.FontWeight.BOLD,color="#10B981")
     txt_f=ft.Text("20",size=20,weight=ft.FontWeight.BOLD,color=ft.Colors.ORANGE_600)
     txt_r=ft.Text("0",size=20,weight=ft.FontWeight.BOLD,color=ft.Colors.BLUE_400)
@@ -2572,4 +2590,4 @@ def _init_app(page: ft.Page):
     cambiar("album")
 
 import os as _os_main
-ft.app(main)
+ft.app(main, assets_dir=_os_main.path.join(_os_main.path.dirname(_os_main.path.abspath(__file__)), "assets"))
