@@ -122,7 +122,7 @@ def buscar_grupos_api(lat, lon, radio_km=5.0):
 
 
 def main(page: ft.Page):
-    page.title="Panini Match Juárez"
+    page.title="Stickers — Intercambio de Estampas"
     page.scroll="adaptive"; page.theme_mode=ft.ThemeMode.LIGHT
     page.bgcolor=ft.Colors.GREY_100; page.padding=0
 
@@ -820,7 +820,7 @@ def main(page: ft.Page):
             colors=[ft.Colors.BLUE_900,ft.Colors.BLUE_500]),
         content=ft.Row([
             ft.Column([ft.Row([ft.Icon(ft.Icons.SPORTS_SOCCER,size=26,color=ft.Colors.WHITE),
-                ft.Text("Panini Match",size=24,weight=ft.FontWeight.BOLD,color=ft.Colors.WHITE)],spacing=10),
+                ft.Text("Stickers App",size=24,weight=ft.FontWeight.BOLD,color=ft.Colors.WHITE)],spacing=10),
                 ft.Text("Intercambia estampas en Juárez",size=12,color=ft.Colors.BLUE_100)],spacing=4,expand=True),
             ft.Column([txt_ih,txt_ph],horizontal_alignment=ft.CrossAxisAlignment.CENTER,spacing=2),
         ],alignment=ft.MainAxisAlignment.SPACE_BETWEEN))

@@ -60,7 +60,7 @@ def obtener_estilo_estado(estado):
 
 
 def main(page: ft.Page):
-    page.title = "Panini Match Juárez"
+    page.title = "Stickers — Intercambio de Estampas"
     page.scroll = "adaptive"
     page.theme_mode = ft.ThemeMode.LIGHT
     page.bgcolor = ft.Colors.GREY_100
@@ -257,7 +257,7 @@ def main(page: ft.Page):
         ft.Column([
             ft.Row([
                 ft.Icon(ft.Icons.SPORTS_SOCCER, size=32, color=ft.Colors.BLUE_600),
-                ft.Text("Panini Match 🏟️", size=28, weight=ft.FontWeight.BOLD, color=ft.Colors.BLUE_GREY_900),
+                ft.Text("Stickers App 🏟️", size=28, weight=ft.FontWeight.BOLD, color=ft.Colors.BLUE_GREY_900),
             ], alignment=ft.MainAxisAlignment.START),
             ft.Text("Gestiona tus estampas y encuentra coleccionistas en Juárez de forma automática.",
                     size=14, color=ft.Colors.BLUE_GREY_600),

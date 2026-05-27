@@ -1,5 +1,5 @@
 """
-servidor.py — Servidor central Panini Match
+servidor.py — Servidor central Stickers App
 Corre este archivo PRIMERO antes de abrir la app.
 """
 from flask import Flask, request, jsonify
@@ -160,12 +160,12 @@ def usuarios_cercanos():
 
 @app.route("/ping")
 def ping():
-    return jsonify({"ok": True, "mensaje": "Servidor Panini Match activo"})
+    return jsonify({"ok": True, "mensaje": "Servidor Stickers App activo"})
 
 
 if __name__ == "__main__":
     print("=" * 50)
-    print("  🏟️  Servidor Panini Match iniciando...")
+    print("  🏟️  Servidor Stickers App iniciando...")
     print("  📡  Escuchando en http://localhost:5000")
     print("  ⚠️   Deja esta ventana abierta")
     print("=" * 50)
