@@ -33,7 +33,7 @@ jobs:
     - name: Build APK
       run: |
         export GRADLE_OPTS="-Xmx3g -Xms512m"
-        flet build apk --module-name panini_match --project stickers --no-rich-output --icon assets/icon.png --splash-color "#0D1B3E" --splash-dark-color "#0D1B3E"
+        flet build apk --module-name panini_match --project stickers --no-rich-output
     - name: Upload APK
       uses: actions/upload-artifact@v4
       with:
