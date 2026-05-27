@@ -7,7 +7,7 @@ import qrcode
 import requests
 
 ARCHIVO_GUARDADO = "album_guardado.json"
-SERVIDOR         = "http://localhost:5000"
+SERVIDOR         = "https://stickers-app-production-555a.up.railway.app"
 
 # Generar ID único por instalación
 ID_FILE = "mi_id.txt"
@@ -95,7 +95,6 @@ def intercambio_qr(mi_album, sus_reps):
              if mi_album.get(f"{c}{i}") not in(TENGO,REPETIDA)}
     return sorted(sus_rep&mis_fal), sorted(mis_rep)
 
-# ── API SERVIDOR ─────────────────────────────────────────────────────
 def servidor_activo():
     try: return requests.get(f"{SERVIDOR}/ping", timeout=2).ok
     except: return False
@@ -139,8 +138,11 @@ def main(page: ft.Page):
 
     snack=ft.SnackBar(content=ft.Text(""),bgcolor=ft.Colors.GREEN_700)
     page.overlay.append(snack)
-    grid_c=ft.Container(); vista_c=ft.Container()
+    grid_c=ft.Container(); vista_c=ft.Container(expand=True)
     resultados=ft.ListView(spacing=12,padding=10,height=300)
+
+    # Contenedores para los botones de nav (para poder actualizarlos)
+    nav_btns = {"album": None, "stats": None, "qr": None, "grupos": None}
 
     def snk(msg,color=ft.Colors.GREEN_700):
         snack.content=ft.Text(msg,color=ft.Colors.WHITE,weight=ft.FontWeight.BOLD)
@@ -223,7 +225,6 @@ def main(page: ft.Page):
         except: pass
         upd_cnt(prefix)
 
-    # ── VISTA GRUPOS ─────────────────────────────────────────────────
     def vista_grupos():
         txt_estado=ft.Text("",size=13,color=ft.Colors.GREY_600,text_align=ft.TextAlign.CENTER)
         txt_servidor=ft.Text("",size=12)
@@ -232,13 +233,12 @@ def main(page: ft.Page):
         campo_radio=ft.TextField(label="Radio (km)",value="5",width=100,border_radius=10,bgcolor=ft.Colors.WHITE)
         buscando=[False]
 
-        # Verificar servidor
         def check_server():
             if servidor_activo():
                 txt_servidor.value="🟢 Servidor conectado"
                 txt_servidor.color=ft.Colors.GREEN_700
             else:
-                txt_servidor.value="🔴 Servidor desconectado — corre servidor.py primero"
+                txt_servidor.value="🔴 Servidor desconectado"
                 txt_servidor.color=ft.Colors.RED_700
             try: txt_servidor.update()
             except: pass
@@ -249,8 +249,7 @@ def main(page: ft.Page):
             nombre_u[0]=campo_nombre.value or "Mi Usuario"
             try: radio=float(campo_radio.value)
             except: radio=5.0
-
-            txt_estado.value="📡 Registrando tu álbum en el servidor..."
+            txt_estado.value="📡 Registrando tu álbum..."
             txt_estado.color=ft.Colors.BLUE_600
             lista_grupos.controls.clear()
             try: txt_estado.update();lista_grupos.update()
@@ -258,7 +257,6 @@ def main(page: ft.Page):
 
             def _buscar():
                 try:
-                    # Registrar
                     res_reg=registrar_usuario(album,nombre_u[0],mi_lat,mi_lon)
                     if not res_reg.get("ok"):
                         txt_estado.value=f"❌ {res_reg.get('mensaje','Error al registrar')}"
@@ -267,41 +265,29 @@ def main(page: ft.Page):
                         except: pass
                         buscando[0]=False
                         return
-
-                    txt_estado.value="🔍 Buscando grupos de intercambio..."
+                    txt_estado.value="🔍 Buscando grupos..."
                     txt_estado.color=ft.Colors.BLUE_600
                     try: txt_estado.update()
                     except: pass
-
-                    # Buscar grupos
                     res=buscar_grupos_api(mi_lat,mi_lon,radio)
                     grupos=res.get("grupos",[])
-
                     lista_grupos.controls.clear()
-
                     if not grupos:
                         lista_grupos.controls.append(
                             ft.Container(alignment=ft.Alignment(0,0),padding=30,
-                                content=ft.Column([
-                                    ft.Text("😔",size=40),
-                                    ft.Text("No se encontraron grupos de intercambio cercanos",
+                                content=ft.Column([ft.Text("😔",size=40),
+                                    ft.Text("No se encontraron grupos cercanos",
                                         color=ft.Colors.GREY_500,italic=True,
-                                        text_align=ft.TextAlign.CENTER,size=14),
-                                    ft.Text("Pide a tus amigos que instalen la app y se registren",
-                                        color=ft.Colors.GREY_400,size=12,
-                                        text_align=ft.TextAlign.CENTER),
-                                ],horizontal_alignment=ft.CrossAxisAlignment.CENTER,spacing=8))
-                        )
-                        txt_estado.value=f"✅ Búsqueda completa — {res.get('mensaje','')}"
+                                        text_align=ft.TextAlign.CENTER,size=14)],
+                                    horizontal_alignment=ft.CrossAxisAlignment.CENTER,spacing=8)))
+                        txt_estado.value="✅ Búsqueda completa"
                     else:
-                        txt_estado.value=f"✅ ¡Se encontraron {len(grupos)} grupos posibles!"
+                        txt_estado.value=f"✅ ¡{len(grupos)} grupos encontrados!"
                         txt_estado.color=ft.Colors.GREEN_700
                         for i,g in enumerate(grupos):
                             lista_grupos.controls.append(tarjeta_grupo(g,i+1))
-
                     try: txt_estado.update();lista_grupos.update();page.update()
                     except: pass
-
                 except Exception as ex:
                     txt_estado.value=f"❌ Error: {ex}"
                     txt_estado.color=ft.Colors.RED_700
@@ -314,12 +300,9 @@ def main(page: ft.Page):
 
         def tarjeta_grupo(g, num):
             miembros=g["miembros"]; tam=g["tamaño"]; total=g["total_estampas"]
-
-            # Color por tamaño del grupo
             if tam>=4: color_header=ft.Colors.PURPLE_600; emoji="🎯"
             elif tam==3: color_header=ft.Colors.BLUE_600; emoji="🔄"
             else: color_header=ft.Colors.GREEN_600; emoji="🤝"
-
             filas_miembros=[]
             for m in miembros:
                 es_yo=(m["id"]==MI_ID)
@@ -328,127 +311,42 @@ def main(page: ft.Page):
                 for r in recibe_de:
                     for est in r["estampas"]:
                         estampas_recibe.append(f"{est} (de {r['de']})")
-
                 filas_miembros.append(
-                    ft.Container(
-                        padding=ft.Padding(10,8,10,8),
-                        border_radius=8,
+                    ft.Container(padding=ft.Padding(10,8,10,8),border_radius=8,
                         bgcolor=ft.Colors.BLUE_50 if es_yo else ft.Colors.GREY_50,
                         border=ft.Border.all(1,ft.Colors.BLUE_200 if es_yo else ft.Colors.GREY_200),
                         content=ft.Column([
-                            ft.Row([
-                                ft.Icon(ft.Icons.PERSON,
-                                    color=ft.Colors.BLUE_600 if es_yo else ft.Colors.GREY_600,size=16),
+                            ft.Row([ft.Icon(ft.Icons.PERSON,
+                                color=ft.Colors.BLUE_600 if es_yo else ft.Colors.GREY_600,size=16),
                                 ft.Text(m["nombre"]+(" (Tú)" if es_yo else ""),
                                     size=13,weight=ft.FontWeight.BOLD,
                                     color=ft.Colors.BLUE_800 if es_yo else ft.Colors.BLUE_GREY_800),
                                 ft.Container(expand=True),
-                                ft.Text(f"📍 {m['dist_km']} km",size=11,color=ft.Colors.GREY_500),
-                            ],spacing=6),
-                            ft.Text(
-                                f"Recibe: {', '.join(estampas_recibe)}" if estampas_recibe else "No recibe en este grupo",
-                                size=12,
-                                color=ft.Colors.GREEN_700 if estampas_recibe else ft.Colors.GREY_400,
-                            ),
-                        ],spacing=4)
-                    )
-                )
+                                ft.Text(f"📍 {m['dist_km']} km",size=11,color=ft.Colors.GREY_500)],spacing=6),
+                            ft.Text(f"Recibe: {', '.join(estampas_recibe)}" if estampas_recibe else "No recibe en este grupo",
+                                size=12,color=ft.Colors.GREEN_700 if estampas_recibe else ft.Colors.GREY_400)],spacing=4)))
+            return ft.Card(elevation=4,content=ft.Container(
+                padding=16,border_radius=16,bgcolor=ft.Colors.WHITE,
+                border=ft.Border.all(1.5,color_header),
+                content=ft.Column([
+                    ft.Container(padding=ft.Padding(12,10,12,10),border_radius=10,bgcolor=color_header,
+                        content=ft.Row([ft.Text(emoji,size=20),
+                            ft.Column([ft.Text(f"Grupo #{num} — {tam} personas",
+                                size=15,weight=ft.FontWeight.BOLD,color=ft.Colors.WHITE),
+                                ft.Text(f"{total} estampas intercambiables",
+                                    size=12,color=ft.Colors.WHITE70)],spacing=2,expand=True)],spacing=10)),
+                    ft.Divider(height=10,color=ft.Colors.GREY_100),
+                    ft.Text("Participantes:",size=13,weight=ft.FontWeight.BOLD,color=ft.Colors.BLUE_GREY_700),
+                    ft.Column(filas_miembros,spacing=6)],spacing=10)))
 
-            return ft.Card(
-                elevation=4,
-                content=ft.Container(
-                    padding=16,border_radius=16,bgcolor=ft.Colors.WHITE,
-                    border=ft.Border.all(1.5,color_header),
-                    content=ft.Column([
-                        # Header
-                        ft.Container(
-                            padding=ft.Padding(12,10,12,10),
-                            border_radius=10,
-                            bgcolor=color_header,
-                            content=ft.Row([
-                                ft.Text(emoji,size=20),
-                                ft.Column([
-                                    ft.Text(f"Grupo #{num} — {tam} personas",
-                                        size=15,weight=ft.FontWeight.BOLD,color=ft.Colors.WHITE),
-                                    ft.Text(f"{total} estampas intercambiables en total",
-                                        size=12,color=ft.Colors.WHITE70),
-                                ],spacing=2,expand=True),
-                                ft.Container(
-                                    padding=ft.Padding(8,4,8,4),
-                                    border_radius=20,
-                                    bgcolor=ft.Colors.WHITE24,
-                                    content=ft.Text(f"{tam} 👥",size=14,color=ft.Colors.WHITE,weight=ft.FontWeight.BOLD),
-                                ),
-                            ],spacing=10),
-                        ),
-                        ft.Divider(height=10,color=ft.Colors.GREY_100),
-                        # Miembros
-                        ft.Text("Participantes:",size=13,weight=ft.FontWeight.BOLD,color=ft.Colors.BLUE_GREY_700),
-                        ft.Column(filas_miembros,spacing=6),
-                        ft.Divider(height=8,color=ft.Colors.GREY_100),
-                        # Botón coordinar
-                        ft.Button(
-                            content=ft.Row([
-                                ft.Icon(ft.Icons.GROUP,color=ft.Colors.WHITE,size=16),
-                                ft.Text("¡Coordinar encuentro!",color=ft.Colors.WHITE,weight=ft.FontWeight.BOLD,size=13),
-                            ],tight=True,spacing=6),
-                            on_click=lambda e,g=g: mostrar_coordinacion(g),
-                            style=ft.ButtonStyle(
-                                bgcolor=color_header,color=ft.Colors.WHITE,
-                                padding=ft.Padding(16,10,16,10),
-                                shape=ft.RoundedRectangleBorder(radius=10),
-                            ),
-                        ),
-                    ],spacing=10)
-                )
-            )
-
-        def mostrar_coordinacion(g):
-            miembros=g["miembros"]
-            nombres=", ".join(m["nombre"] for m in miembros)
-            dlg=ft.AlertDialog(
-                modal=True,bgcolor=ft.Colors.WHITE,shape=ft.RoundedRectangleBorder(radius=20),
-                title=ft.Text("📅 Coordinar Encuentro",weight=ft.FontWeight.BOLD,color=ft.Colors.BLUE_GREY_900),
-                content=ft.Container(width=380,content=ft.Column([
-                    ft.Container(padding=12,border_radius=10,bgcolor=ft.Colors.BLUE_50,
-                        content=ft.Column([
-                            ft.Text("👥 Participantes:",size=13,weight=ft.FontWeight.BOLD,color=ft.Colors.BLUE_800),
-                            ft.Text(nombres,size=13,color=ft.Colors.BLUE_900),
-                        ],spacing=4)),
-                    ft.Container(padding=12,border_radius=10,bgcolor=ft.Colors.GREEN_50,
-                        content=ft.Column([
-                            ft.Text("📍 Punto de encuentro sugerido:",size=13,weight=ft.FontWeight.BOLD,color=ft.Colors.GREEN_800),
-                            ft.Text("Centro del grupo — cerca de todos",size=13,color=ft.Colors.GREEN_900),
-                        ],spacing=4)),
-                    ft.Container(padding=12,border_radius=10,bgcolor=ft.Colors.AMBER_50,
-                        content=ft.Column([
-                            ft.Text("💡 Cómo coordinar:",size=13,weight=ft.FontWeight.BOLD,color=ft.Colors.AMBER_800),
-                            ft.Text("1. Comparte tu QR con el grupo\n2. Acuerden lugar y hora por WhatsApp\n3. ¡Intercambien sus estampas!",
-                                size=12,color=ft.Colors.AMBER_900),
-                        ],spacing=4)),
-                ],spacing=10)),
-                actions=[
-                    ft.Button(content=ft.Text("Cerrar",color=ft.Colors.WHITE,weight=ft.FontWeight.BOLD),
-                        on_click=lambda e:cerrar(dlg),
-                        style=ft.ButtonStyle(bgcolor=ft.Colors.BLUE_600,color=ft.Colors.WHITE,
-                            padding=ft.Padding(20,10,20,10),shape=ft.RoundedRectangleBorder(radius=10))),
-                ],
-                actions_alignment=ft.MainAxisAlignment.CENTER,
-            )
-            page.overlay.append(dlg);dlg.open=True;page.update()
-
-        # Check servidor al abrir
         threading.Thread(target=check_server,daemon=True).start()
-
         btn_buscar=ft.Button(
             content=ft.Row([ft.Icon(ft.Icons.GROUP_WORK,color=ft.Colors.WHITE),
-                ft.Text("Buscar Grupos de Intercambio",color=ft.Colors.WHITE,weight=ft.FontWeight.BOLD,size=15)],
+                ft.Text("Buscar Grupos",color=ft.Colors.WHITE,weight=ft.FontWeight.BOLD,size=15)],
                 tight=True,spacing=8),
             on_click=registrar_y_buscar,
             style=ft.ButtonStyle(bgcolor=ft.Colors.PURPLE_600,color=ft.Colors.WHITE,
-                padding=ft.Padding(24,14,24,14),shape=ft.RoundedRectangleBorder(radius=12),elevation=4),
-        )
-
+                padding=ft.Padding(24,14,24,14),shape=ft.RoundedRectangleBorder(radius=12),elevation=4))
         return ft.Container(padding=ft.Padding(20,16,20,24),content=ft.Column([
             ft.Container(padding=20,bgcolor=ft.Colors.WHITE,border_radius=18,
                 shadow=ft.BoxShadow(blur_radius=12,color=ft.Colors.BLACK12,offset=ft.Offset(0,3)),
@@ -456,115 +354,150 @@ def main(page: ft.Page):
                     ft.Row([ft.Icon(ft.Icons.GROUP_WORK,color=ft.Colors.PURPLE_600,size=22),
                         ft.Text("Intercambio Grupal",size=17,weight=ft.FontWeight.BOLD,color=ft.Colors.BLUE_GREY_800)],spacing=8),
                     txt_servidor,
-                    ft.Text("La app busca grupos de 2-5 personas cercanas que puedan intercambiar estampas entre sí de forma circular.",
-                        size=12,color=ft.Colors.GREY_500),
+                    ft.Text("Busca grupos de 2-5 personas cercanas para intercambiar.",size=12,color=ft.Colors.GREY_500),
                     ft.Divider(height=8,color=ft.Colors.GREY_100),
                     ft.Row([campo_nombre,campo_radio],spacing=10),
                     ft.Row([btn_buscar],alignment=ft.MainAxisAlignment.CENTER),
-                    ft.Row([txt_estado],alignment=ft.MainAxisAlignment.CENTER),
-                ],spacing=12)),
+                    ft.Row([txt_estado],alignment=ft.MainAxisAlignment.CENTER)],spacing=12)),
             ft.Divider(height=10,color=ft.Colors.TRANSPARENT),
-            lista_grupos,
-        ],spacing=10,scroll=ft.ScrollMode.AUTO))
+            lista_grupos],spacing=10,scroll=ft.ScrollMode.AUTO))
 
-    # ── VISTA QR ────────────────────────────────────────────────────
     def vista_qr():
         txt_st=ft.Text("",size=13,color=ft.Colors.GREY_600,text_align=ft.TextAlign.CENTER)
-        txt_ruta=ft.Text("",size=11,color=ft.Colors.BLUE_600,text_align=ft.TextAlign.CENTER,italic=True)
         res_scan=ft.Column([],spacing=8)
         campo=ft.TextField(label="Tu nombre",value=nombre_u[0],width=260,border_radius=10,bgcolor=ft.Colors.WHITE)
-        escaneando=[False]
+        qr_texto_field=ft.TextField(value="",read_only=True,multiline=True,min_lines=3,max_lines=4,
+            label="Tu código QR (cópialo y mándalo por WhatsApp)",
+            border_radius=10,bgcolor=ft.Colors.GREY_50,visible=False,text_size=10)
+        btn_copiar=ft.Button(
+            content=ft.Row([ft.Icon(ft.Icons.COPY,color=ft.Colors.WHITE,size=16),
+                ft.Text("Copiar código",color=ft.Colors.WHITE,weight=ft.FontWeight.BOLD)],tight=True,spacing=6),
+            visible=False,
+            style=ft.ButtonStyle(bgcolor=ft.Colors.GREEN_600,color=ft.Colors.WHITE,
+                padding=ft.Padding(16,10,16,10),shape=ft.RoundedRectangleBorder(radius=10)))
 
         def gen(e):
             nombre_u[0]=campo.value or "Mi Usuario"
             try:
-                ruta=generar_qr_archivo(album,nombre_u[0])
-                txt_st.value=f"✅ QR generado para: {nombre_u[0]}"
+                reps=[k for k,v in album.items() if v==REPETIDA]
+                fals=[f"{c}{i}" for c,_,_ in PAISES for i in range(1,21)
+                      if album.get(f"{c}{i}") not in(TENGO,REPETIDA)]
+                texto_qr=f"STICKERS|{MI_ID}|{nombre_u[0]}|{','.join(reps)}|{','.join(fals[:50])}"
+                qr_texto_field.value=texto_qr
+                qr_texto_field.visible=True
+                btn_copiar.visible=True
+                def _copiar(ev):
+                    page.set_clipboard(texto_qr)
+                    txt_st.value="✅ ¡Copiado! Pégalo en WhatsApp"
+                    txt_st.color=ft.Colors.GREEN_700
+                    try: txt_st.update()
+                    except: pass
+                btn_copiar.on_click=_copiar
+                txt_st.value="✅ QR generado — cópialo y mándalo por WhatsApp"
                 txt_st.color=ft.Colors.GREEN_700
-                txt_ruta.value=f"📁 {ruta}"
-                subprocess.Popen(["cmd","/c","start","",ruta])
             except Exception as ex:
                 txt_st.value=f"❌ Error: {ex}"; txt_st.color=ft.Colors.RED_700
-            try: txt_st.update();txt_ruta.update()
+            try: txt_st.update();qr_texto_field.update();btn_copiar.update();page.update()
             except: pass
 
-        def scan(e):
-            if escaneando[0]: return
-            escaneando[0]=True
-            txt_st.value="📷 Abriendo cámara... presiona Q para cancelar"
-            txt_st.color=ft.Colors.BLUE_600
-            try: txt_st.update()
-            except: pass
-            def _scan():
-                try:
-                    cap=cv2.VideoCapture(0);det=cv2.QRCodeDetector();leido=None
-                    for _ in range(300):
-                        ret,frame=cap.read()
-                        if not ret: break
-                        cv2.imshow("Escanear QR — Q para cancelar",frame)
-                        leido,_,_=det.detectAndDecode(frame)
-                        if leido: break
-                        if cv2.waitKey(1)&0xFF==ord('q'): break
-                    cap.release();cv2.destroyAllWindows()
-                    if leido:
-                        partes=leido.split("|",1)
-                        nom=partes[0]; reps=partes[1].split(",") if len(partes)>1 and partes[1] else []
-                        me_da,le_doy=intercambio_qr(album,reps)
-                        res_scan.controls.clear()
-                        res_scan.controls.append(ft.Container(padding=16,border_radius=14,bgcolor=ft.Colors.WHITE,
-                            border=ft.Border.all(1.5,ft.Colors.BLUE_200),
-                            content=ft.Column([
-                                ft.Row([ft.Icon(ft.Icons.SWAP_HORIZ,color=ft.Colors.BLUE_600,size=22),
-                                    ft.Text(f"Intercambio con {nom}",size=16,weight=ft.FontWeight.BOLD)],spacing=8),
-                                ft.Container(bgcolor=ft.Colors.GREEN_50,border_radius=10,padding=12,
-                                    content=ft.Column([ft.Text(f"Él te da ({len(me_da)})",size=13,weight=ft.FontWeight.BOLD,color=ft.Colors.GREEN_700),
-                                        ft.Text(", ".join(me_da) or "Ninguna",size=13,color=ft.Colors.GREEN_900)],spacing=4)),
-                                ft.Container(bgcolor=ft.Colors.BLUE_50,border_radius=10,padding=12,
-                                    content=ft.Column([ft.Text(f"Tú le das ({len(le_doy)})",size=13,weight=ft.FontWeight.BOLD,color=ft.Colors.BLUE_700),
-                                        ft.Text(", ".join(le_doy) or "Ninguna",size=13,color=ft.Colors.BLUE_900)],spacing=4)),
-                            ],spacing=8)))
-                        txt_st.value=f"✅ QR de {nom} escaneado"; txt_st.color=ft.Colors.GREEN_700
-                    else:
-                        txt_st.value="⚠️ No se detectó ningún QR"; txt_st.color=ft.Colors.ORANGE_700
-                except Exception as ex:
-                    txt_st.value=f"❌ Error cámara: {ex}"; txt_st.color=ft.Colors.RED_700
-                finally:
-                    escaneando[0]=False
-                    try: txt_st.update();res_scan.update();page.update()
+        def pegar_qr(e):
+            campo_pegar=ft.TextField(label="Pega aquí el código QR de la otra persona",
+                multiline=True,min_lines=3,max_lines=5,border_radius=10,bgcolor=ft.Colors.WHITE,width=320)
+            def leer(ev):
+                txt=campo_pegar.value.strip()
+                if txt:
+                    dlg.open=False; page.update()
+                    procesar_qr_texto(txt)
+                else:
+                    campo_pegar.error_text="Pega el código primero"
+                    try: campo_pegar.update()
                     except: pass
-            threading.Thread(target=_scan,daemon=True).start()
+            dlg=ft.AlertDialog(modal=True,bgcolor=ft.Colors.WHITE,shape=ft.RoundedRectangleBorder(radius=16),
+                title=ft.Text("Pegar código QR",weight=ft.FontWeight.BOLD,size=16),
+                content=ft.Container(width=340,content=ft.Column([
+                    ft.Text("Pide a la otra persona su código y pégalo aquí.",size=13,color=ft.Colors.GREY_600),
+                    campo_pegar],spacing=10)),
+                actions=[
+                    ft.Button(content=ft.Text("Cancelar",color=ft.Colors.GREY_700),
+                        on_click=lambda e: cerrar(dlg),
+                        style=ft.ButtonStyle(bgcolor=ft.Colors.GREY_200,padding=ft.Padding(16,10,16,10),
+                            shape=ft.RoundedRectangleBorder(radius=10))),
+                    ft.Button(content=ft.Text("Leer QR",color=ft.Colors.WHITE,weight=ft.FontWeight.BOLD),
+                        on_click=leer,
+                        style=ft.ButtonStyle(bgcolor=ft.Colors.BLUE_600,color=ft.Colors.WHITE,
+                            padding=ft.Padding(16,10,16,10),shape=ft.RoundedRectangleBorder(radius=10)))],
+                actions_alignment=ft.MainAxisAlignment.END)
+            page.overlay.append(dlg); dlg.open=True; page.update()
+
+        def procesar_qr_texto(leido):
+            if leido.startswith("STICKERS|"):
+                partes=leido.split("|")
+                nom=partes[2] if len(partes)>2 else "Otro"
+                reps=partes[3].split(",") if len(partes)>3 and partes[3] else []
+            else:
+                partes=leido.split("|",1)
+                nom=partes[0]
+                reps=partes[1].split(",") if len(partes)>1 and partes[1] else []
+            me_da,le_doy=intercambio_qr(album,reps)
+            txt_st.value=f"✅ QR de {nom} leído"; txt_st.color=ft.Colors.GREEN_700
+            res_scan.controls.clear()
+            res_scan.controls.append(
+                ft.Container(padding=16,border_radius=14,bgcolor=ft.Colors.WHITE,
+                    border=ft.Border.all(1.5,ft.Colors.BLUE_200),
+                    shadow=ft.BoxShadow(blur_radius=8,color=ft.Colors.BLACK12,offset=ft.Offset(0,2)),
+                    content=ft.Column([
+                        ft.Row([ft.Icon(ft.Icons.SWAP_HORIZ,color=ft.Colors.BLUE_600,size=22),
+                            ft.Text(f"Intercambio con {nom}",size=16,weight=ft.FontWeight.BOLD,color=ft.Colors.BLUE_GREY_900)],spacing=8),
+                        ft.Divider(height=8,color=ft.Colors.GREY_100),
+                        ft.Container(bgcolor=ft.Colors.GREEN_50,border_radius=10,padding=12,
+                            content=ft.Column([
+                                ft.Row([ft.Icon(ft.Icons.ARROW_DOWNWARD,color=ft.Colors.GREEN_700,size=16),
+                                    ft.Text(f"Recibes ({len(me_da)})",size=13,weight=ft.FontWeight.BOLD,color=ft.Colors.GREEN_700)]),
+                                ft.Text(", ".join(me_da) if me_da else "Ninguna",size=13,color=ft.Colors.GREEN_900)],spacing=4)),
+                        ft.Container(bgcolor=ft.Colors.BLUE_50,border_radius=10,padding=12,
+                            content=ft.Column([
+                                ft.Row([ft.Icon(ft.Icons.ARROW_UPWARD,color=ft.Colors.BLUE_700,size=16),
+                                    ft.Text(f"Das ({len(le_doy)})",size=13,weight=ft.FontWeight.BOLD,color=ft.Colors.BLUE_700)]),
+                                ft.Text(", ".join(le_doy) if le_doy else "Ninguna",size=13,color=ft.Colors.BLUE_900)],spacing=4))],spacing=10)))
+            try: txt_st.update();res_scan.update();page.update()
+            except: pass
 
         btn_gen=ft.Button(content=ft.Row([ft.Icon(ft.Icons.QR_CODE_2,color=ft.Colors.WHITE),
             ft.Text("Generar mi QR",color=ft.Colors.WHITE,weight=ft.FontWeight.BOLD)],tight=True,spacing=8),
             on_click=gen,style=ft.ButtonStyle(bgcolor=ft.Colors.BLUE_600,color=ft.Colors.WHITE,
                 padding=ft.Padding(20,12,20,12),shape=ft.RoundedRectangleBorder(radius=12),elevation=4))
-        btn_scan=ft.Button(content=ft.Row([ft.Icon(ft.Icons.QR_CODE_SCANNER,color=ft.Colors.WHITE),
-            ft.Text("Escanear QR de otro",color=ft.Colors.WHITE,weight=ft.FontWeight.BOLD)],tight=True,spacing=8),
-            on_click=scan,style=ft.ButtonStyle(bgcolor=ft.Colors.PURPLE_600,color=ft.Colors.WHITE,
+        btn_pegar=ft.Button(content=ft.Row([ft.Icon(ft.Icons.CONTENT_PASTE,color=ft.Colors.WHITE),
+            ft.Text("Pegar código QR",color=ft.Colors.WHITE,weight=ft.FontWeight.BOLD)],tight=True,spacing=8),
+            on_click=pegar_qr,style=ft.ButtonStyle(bgcolor=ft.Colors.PURPLE_600,color=ft.Colors.WHITE,
                 padding=ft.Padding(20,12,20,12),shape=ft.RoundedRectangleBorder(radius=12),elevation=4))
 
-        return ft.Container(padding=ft.Padding(20,16,20,24),content=ft.Column([
-            ft.Container(padding=20,bgcolor=ft.Colors.WHITE,border_radius=18,
+        return ft.Container(padding=ft.Padding(16,16,16,24),content=ft.Column([
+            ft.Container(padding=16,bgcolor=ft.Colors.WHITE,border_radius=18,
                 shadow=ft.BoxShadow(blur_radius=12,color=ft.Colors.BLACK12,offset=ft.Offset(0,3)),
                 content=ft.Column([
                     ft.Row([ft.Icon(ft.Icons.QR_CODE_2,color=ft.Colors.BLUE_600,size=22),
                         ft.Text("Mi Código QR",size=17,weight=ft.FontWeight.BOLD,color=ft.Colors.BLUE_GREY_800)],spacing=8),
-                    campo,ft.Row([btn_gen],alignment=ft.MainAxisAlignment.CENTER),
-                    ft.Row([txt_st],alignment=ft.MainAxisAlignment.CENTER),
-                    ft.Row([txt_ruta],alignment=ft.MainAxisAlignment.CENTER),
-                ],spacing=12)),
+                    ft.Container(padding=10,border_radius=10,bgcolor=ft.Colors.BLUE_50,
+                        border=ft.Border.all(1,ft.Colors.BLUE_100),
+                        content=ft.Column([
+                            ft.Text("📋 Cómo intercambiar:",size=12,weight=ft.FontWeight.BOLD,color=ft.Colors.BLUE_800),
+                            ft.Text("1️⃣ Genera tu QR y cópialo",size=12,color=ft.Colors.BLUE_700),
+                            ft.Text("2️⃣ Mándalo por WhatsApp",size=12,color=ft.Colors.BLUE_700),
+                            ft.Text("3️⃣ Pega el código de la otra persona aquí",size=12,color=ft.Colors.BLUE_700)],spacing=3)),
+                    campo,
+                    ft.Row([btn_gen],alignment=ft.MainAxisAlignment.CENTER),
+                    qr_texto_field,
+                    ft.Row([btn_copiar],alignment=ft.MainAxisAlignment.CENTER),
+                    ft.Row([txt_st],alignment=ft.MainAxisAlignment.CENTER)],spacing=12)),
             ft.Divider(height=10,color=ft.Colors.TRANSPARENT),
-            ft.Container(padding=20,bgcolor=ft.Colors.WHITE,border_radius=18,
+            ft.Container(padding=16,bgcolor=ft.Colors.WHITE,border_radius=18,
                 shadow=ft.BoxShadow(blur_radius=12,color=ft.Colors.BLACK12,offset=ft.Offset(0,3)),
                 content=ft.Column([
                     ft.Row([ft.Icon(ft.Icons.QR_CODE_SCANNER,color=ft.Colors.PURPLE_600,size=22),
-                        ft.Text("Escanear QR",size=17,weight=ft.FontWeight.BOLD,color=ft.Colors.BLUE_GREY_800)],spacing=8),
-                    ft.Row([btn_scan],alignment=ft.MainAxisAlignment.CENTER),
-                    res_scan,
-                ],spacing=12)),
-        ],spacing=10,scroll=ft.ScrollMode.AUTO))
+                        ft.Text("Leer QR de otro",size=17,weight=ft.FontWeight.BOLD,color=ft.Colors.BLUE_GREY_800)],spacing=8),
+                    ft.Row([btn_pegar],alignment=ft.MainAxisAlignment.CENTER),
+                    res_scan],spacing=12))],spacing=10,scroll=ft.ScrollMode.AUTO))
 
-    # ── VISTA STATS ─────────────────────────────────────────────────
     def vista_stats():
         pc,tt,tr,pct,det=stats(album)
         def tc(titulo,val,sub,color,icono):
@@ -580,8 +513,7 @@ def main(page: ft.Page):
             tc("Países\nCompletos",pc,f"de {TOTAL_PAISES}",ft.Colors.GREEN_600,ft.Icons.EMOJI_EVENTS),
             tc("Estampas\nColectadas",tt,f"de {TOTAL_ESTAMPAS}",ft.Colors.BLUE_600,ft.Icons.COLLECTIONS),
             tc("Álbum\nCompletado",f"{pct}%","del total",ft.Colors.PURPLE_600,ft.Icons.PIE_CHART),
-            tc("Repetidas\nTotales",tr,"para intercambio",ft.Colors.ORANGE_600,ft.Icons.COPY_ALL),
-        ],spacing=10)
+            tc("Repetidas\nTotales",tr,"para intercambio",ft.Colors.ORANGE_600,ft.Icons.COPY_ALL)],spacing=10)
         det_ord=sorted(det,key=lambda x:(not x[5],-x[3]))
         filas=[]
         for c,n,iso,t,r,comp in det_ord:
@@ -599,9 +531,9 @@ def main(page: ft.Page):
                         ft.Row([ft.Text(f"[{iso}] {n}",size=13,weight=ft.FontWeight.BOLD,
                             color=ft.Colors.GREEN_800 if comp else ft.Colors.BLUE_GREY_800),
                             ft.Container(expand=True),ft.Text(f"{t}/20",size=12,color=ft.Colors.GREY_600)]),
-                        ft.ProgressBar(value=t/20,bgcolor=ft.Colors.GREY_100,color=cb,height=6,border_radius=3),
-                    ],expand=True,spacing=4),
-                ],spacing=10,vertical_alignment=ft.CrossAxisAlignment.CENTER)))
+                        ft.ProgressBar(value=t/20,bgcolor=ft.Colors.GREY_100,color=cb,height=6,border_radius=3)],
+                        expand=True,spacing=4)],
+                    spacing=10,vertical_alignment=ft.CrossAxisAlignment.CENTER)))
         return ft.Container(padding=ft.Padding(20,16,20,24),content=ft.Column([
             resumen,ft.Divider(height=8,color=ft.Colors.TRANSPARENT),
             ft.Container(padding=20,bgcolor=ft.Colors.WHITE,border_radius=18,
@@ -612,8 +544,7 @@ def main(page: ft.Page):
                     ft.Column([ft.Row([ft.Text("Progreso general",size=13,weight=ft.FontWeight.BOLD,color=ft.Colors.BLUE_GREY_700),
                         ft.Text(f"{pct}%",size=13,weight=ft.FontWeight.BOLD,color=ft.Colors.GREEN_600)],
                         alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
-                        ft.ProgressBar(value=pct/100,bgcolor=ft.Colors.GREY_200,color=ft.Colors.GREEN_500,height=16,border_radius=8)],spacing=6),
-                ],spacing=12)),
+                        ft.ProgressBar(value=pct/100,bgcolor=ft.Colors.GREY_200,color=ft.Colors.GREEN_500,height=16,border_radius=8)],spacing=6)],spacing=12)),
             ft.Divider(height=6,color=ft.Colors.TRANSPARENT),
             ft.Container(padding=20,bgcolor=ft.Colors.WHITE,border_radius=18,
                 shadow=ft.BoxShadow(blur_radius=12,color=ft.Colors.BLACK12,offset=ft.Offset(0,3)),
@@ -623,11 +554,9 @@ def main(page: ft.Page):
                         ft.Container(expand=True),
                         ft.Text(f"{pc} completos ✓",size=12,color=ft.Colors.GREEN_600,weight=ft.FontWeight.BOLD)],spacing=8),
                     ft.Divider(height=6,color=ft.Colors.GREY_100),
-                    ft.Column(filas,spacing=6,scroll=ft.ScrollMode.AUTO),
-                ],spacing=10)),
-        ],spacing=10,scroll=ft.ScrollMode.AUTO))
+                    ft.Column(filas,spacing=6,scroll=ft.ScrollMode.AUTO)],spacing=10))],
+            spacing=10,scroll=ft.ScrollMode.AUTO))
 
-    # ── VISTA ÁLBUM ─────────────────────────────────────────────────
     def vista_album():
         def tc2(label,widget,color,icono):
             return ft.Container(expand=True,padding=14,border_radius=14,bgcolor=ft.Colors.WHITE,
@@ -645,7 +574,7 @@ def main(page: ft.Page):
         leyenda=ft.Row([chip(C_FALTA,"Falta"),chip(C_TENGO,"Tengo (1 clic)"),chip(C_REPETIDA,"Repetida (2 clics)")],spacing=14)
         dd=ft.Dropdown(label="Selección Nacional",value=pais_sel[0],
             options=[ft.dropdown.Option(key=c,text=f"[{iso}]  {n}") for c,n,iso in PAISES],
-            width=320,border_radius=10,bgcolor=ft.Colors.WHITE,on_select=on_pais)
+            width=320,border_radius=10,bgcolor=ft.Colors.WHITE,on_change=on_pais)
         def reset(e):
             p=pais_sel[0];nm,_=PAISES_DICT.get(p,(p,""))
             for i in range(1,21): album.pop(f"{p}{i}",None)
@@ -678,26 +607,32 @@ def main(page: ft.Page):
                     ft.Row([dd,ft.Container(expand=True),btn_reset],spacing=8),
                     ft.Column([ft.Row([ft.Text("Progreso",size=12,color=ft.Colors.GREY_500),txt_prog],
                         alignment=ft.MainAxisAlignment.SPACE_BETWEEN),barra],spacing=5),
-                    ft.Container(content=grid_c,padding=ft.Padding(0,6,0,0)),
-                ],spacing=12)),
+                    ft.Container(content=grid_c,padding=ft.Padding(0,6,0,0))],spacing=12)),
             ft.Divider(height=10,color=ft.Colors.TRANSPARENT),
             ft.Row([btn_bus,btn_save],alignment=ft.MainAxisAlignment.CENTER,spacing=12),
             ft.Divider(height=10,color=ft.Colors.TRANSPARENT),
             ft.Row([ft.Icon(ft.Icons.SWAP_HORIZ,color=ft.Colors.BLUE_600,size=20),
                 ft.Text("Intercambios Sugeridos",size=17,weight=ft.FontWeight.BOLD,color=ft.Colors.BLUE_GREY_800)],spacing=8),
-            resultados,
-        ],spacing=10))
+            resultados],spacing=10))
 
     def cambiar(nueva):
         vista[0]=nueva
-        for b,v in [(btn_al,"album"),(btn_st,"stats"),(btn_qr,"qr"),(btn_gr,"grupos")]:
-            b.style.bgcolor=ft.Colors.BLUE_600 if nueva==v else ft.Colors.BLUE_GREY_700
-        if nueva=="album": vista_c.content=vista_album();upd_tablero(pais_sel[0])
+        # Actualizar colores de botones nav
+        for key, btn in nav_btns.items():
+            if btn is not None:
+                btn.style=ft.ButtonStyle(
+                    bgcolor=ft.Colors.BLUE_600 if nueva==key else ft.Colors.BLUE_GREY_700,
+                    color=ft.Colors.WHITE,
+                    padding=ft.Padding(12,10,12,10),
+                    shape=ft.RoundedRectangleBorder(radius=10))
+                try: btn.update()
+                except: pass
+        if nueva=="album":
+            vista_c.content=vista_album()
+            upd_tablero(pais_sel[0])
         elif nueva=="stats": vista_c.content=vista_stats()
         elif nueva=="qr": vista_c.content=vista_qr()
         elif nueva=="grupos": vista_c.content=vista_grupos()
-        try: btn_al.update();btn_st.update();btn_qr.update();btn_gr.update()
-        except: pass
         try: vista_c.update()
         except: pass
         page.update()
@@ -718,40 +653,23 @@ def main(page: ft.Page):
                 elif v==TENGO: mo.add(k)
             pa=pais_sel[0]; enc=0
             resultados.controls.clear()
-
-            # Buscar en servidor si está activo
-            usar_servidor = servidor_activo()
-            usuarios = []
-
-            if usar_servidor:
+            usuarios=list(USUARIOS_DB)
+            if servidor_activo():
                 try:
-                    # Registrar primero
-                    registrar_usuario(album, nombre_u[0], mi_lat, mi_lon)
-                    # Obtener usuarios cercanos
-                    r = requests.post(f"{SERVIDOR}/usuarios_cercanos",
+                    registrar_usuario(album,nombre_u[0],mi_lat,mi_lon)
+                    r=requests.post(f"{SERVIDOR}/usuarios_cercanos",
                         json={"lat":mi_lat,"lon":mi_lon,"radio_km":10.0},timeout=5)
-                    data = r.json()
+                    data=r.json()
+                    db_local={}
+                    if os.path.exists("usuarios_db.json"):
+                        db_local=json.load(open("usuarios_db.json","r",encoding="utf-8"))
                     for u in data.get("usuarios",[]):
-                        if u["id"] == MI_ID: continue
-                        # Obtener detalle del usuario
-                        db_local = {}
-                        if os.path.exists("usuarios_db.json"):
-                            db_local = json.load(open("usuarios_db.json","r",encoding="utf-8"))
+                        if u["id"]==MI_ID: continue
                         if u["id"] in db_local:
-                            ud = db_local[u["id"]]
-                            usuarios.append({
-                                "nombre": ud["nombre"],
-                                "repetidas": ud.get("repetidas",[]),
-                                "faltantes": ud.get("faltantes",[]),
-                                "lat": ud["lat"], "lon": ud["lon"],
-                                "is_business": False,
-                            })
+                            ud=db_local[u["id"]]
+                            usuarios.append({"nombre":ud["nombre"],"repetidas":ud.get("repetidas",[]),
+                                "faltantes":ud.get("faltantes",[]),"lat":ud["lat"],"lon":ud["lon"],"is_business":False})
                 except: pass
-
-            # Siempre incluir usuarios hardcodeados como respaldo
-            for u in USUARIOS_DB:
-                usuarios.append(u)
-
             for u in usuarios:
                 sr=set(u["repetidas"]); sf=set(u["faltantes"])
                 md={c for c in sr if c.startswith(pa) and c not in mo and c not in mr}
@@ -765,67 +683,73 @@ def main(page: ft.Page):
                         bgcolor=ft.Colors.AMBER_50 if s else ft.Colors.WHITE,
                         border=ft.Border.all(1.5,ft.Colors.AMBER_300 if s else ft.Colors.BLUE_100),
                         content=ft.Column([
-                            ft.Row([
-                                ft.Container(content=ft.Icon(ft.Icons.STOREFRONT if s else ft.Icons.PERSON,color=ft.Colors.WHITE,size=18),
-                                    bgcolor=ft.Colors.AMBER_600 if s else ft.Colors.BLUE_500,border_radius=20,padding=6),
-                                ft.Column([
-                                    ft.Text(u["nombre"]+(" ⭐" if s else ""),weight=ft.FontWeight.BOLD,size=14,color=ft.Colors.BLUE_GREY_900),
+                            ft.Row([ft.Container(content=ft.Icon(ft.Icons.STOREFRONT if s else ft.Icons.PERSON,
+                                color=ft.Colors.WHITE,size=18),
+                                bgcolor=ft.Colors.AMBER_600 if s else ft.Colors.BLUE_500,border_radius=20,padding=6),
+                                ft.Column([ft.Text(u["nombre"]+(" ⭐" if s else ""),
+                                    weight=ft.FontWeight.BOLD,size=14,color=ft.Colors.BLUE_GREY_900),
                                     ft.Row([ft.Icon(ft.Icons.LOCATION_ON,size=12,color=ft.Colors.GREY_500),
-                                        ft.Text(f"A {round(dist,1)} km",size=12,color=ft.Colors.GREY_500)],spacing=2),
-                                ],spacing=1),
-                            ],spacing=10),
+                                        ft.Text(f"A {round(dist,1)} km",size=12,color=ft.Colors.GREY_500)],spacing=2)],spacing=1)],spacing=10),
                             ft.Divider(height=8,color=ft.Colors.GREY_100),
                             ft.Container(bgcolor=ft.Colors.GREEN_50,border_radius=8,padding=ft.Padding(8,6,8,6),
                                 content=ft.Text(f"🟢 Te da: {', '.join(sorted(md))}",size=13,color=ft.Colors.GREEN_800)),
                             ft.Container(bgcolor=ft.Colors.BLUE_50,border_radius=8,padding=ft.Padding(8,6,8,6),
-                                content=ft.Text(f"🔵 Tú le das: {', '.join(sorted(ld))}",size=13,color=ft.Colors.BLUE_800)),
-                        ],spacing=8))))
+                                content=ft.Text(f"🔵 Tú le das: {', '.join(sorted(ld))}",size=13,color=ft.Colors.BLUE_800))],
+                        spacing=8))))
                     enc+=1
-
             if enc==0:
                 resultados.controls.append(ft.Container(alignment=ft.Alignment(0,0),padding=30,
                     content=ft.Column([ft.Text("😔",size=40),
-                        ft.Text("No hay intercambios disponibles",
-                            color=ft.Colors.GREY_500,italic=True,text_align=ft.TextAlign.CENTER,size=14),
+                        ft.Text("No hay intercambios disponibles",color=ft.Colors.GREY_500,
+                            italic=True,text_align=ft.TextAlign.CENTER,size=14),
                         ft.Text("Prueba marcando estampas como Repetidas (doble clic)",
-                            color=ft.Colors.GREY_400,size=12,text_align=ft.TextAlign.CENTER),
-                    ],horizontal_alignment=ft.CrossAxisAlignment.CENTER,spacing=8)))
+                            color=ft.Colors.GREY_400,size=12,text_align=ft.TextAlign.CENTER)],
+                        horizontal_alignment=ft.CrossAxisAlignment.CENTER,spacing=8)))
             try: resultados.update(); page.update()
             except: pass
 
-        import threading
-        threading.Thread(target=_buscar, daemon=True).start()
+        threading.Thread(target=_buscar,daemon=True).start()
 
+    # ── NAVEGACIÓN ───────────────────────────────────────────────────
     btn_al=ft.Button(content=ft.Row([ft.Icon(ft.Icons.GRID_VIEW,color=ft.Colors.WHITE,size=14),
         ft.Text("Álbum",color=ft.Colors.WHITE,weight=ft.FontWeight.BOLD,size=12)],tight=True,spacing=4),
-        on_click=lambda e:cambiar("album"),style=ft.ButtonStyle(bgcolor=ft.Colors.BLUE_600,color=ft.Colors.WHITE,
+        on_click=lambda e:cambiar("album"),
+        style=ft.ButtonStyle(bgcolor=ft.Colors.BLUE_600,color=ft.Colors.WHITE,
             padding=ft.Padding(12,10,12,10),shape=ft.RoundedRectangleBorder(radius=10)))
     btn_st=ft.Button(content=ft.Row([ft.Icon(ft.Icons.BAR_CHART,color=ft.Colors.WHITE,size=14),
         ft.Text("Stats",color=ft.Colors.WHITE,weight=ft.FontWeight.BOLD,size=12)],tight=True,spacing=4),
-        on_click=lambda e:cambiar("stats"),style=ft.ButtonStyle(bgcolor=ft.Colors.BLUE_GREY_700,color=ft.Colors.WHITE,
+        on_click=lambda e:cambiar("stats"),
+        style=ft.ButtonStyle(bgcolor=ft.Colors.BLUE_GREY_700,color=ft.Colors.WHITE,
             padding=ft.Padding(12,10,12,10),shape=ft.RoundedRectangleBorder(radius=10)))
     btn_qr=ft.Button(content=ft.Row([ft.Icon(ft.Icons.QR_CODE_SCANNER,color=ft.Colors.WHITE,size=14),
         ft.Text("QR",color=ft.Colors.WHITE,weight=ft.FontWeight.BOLD,size=12)],tight=True,spacing=4),
-        on_click=lambda e:cambiar("qr"),style=ft.ButtonStyle(bgcolor=ft.Colors.BLUE_GREY_700,color=ft.Colors.WHITE,
+        on_click=lambda e:cambiar("qr"),
+        style=ft.ButtonStyle(bgcolor=ft.Colors.BLUE_GREY_700,color=ft.Colors.WHITE,
             padding=ft.Padding(12,10,12,10),shape=ft.RoundedRectangleBorder(radius=10)))
     btn_gr=ft.Button(content=ft.Row([ft.Icon(ft.Icons.GROUP_WORK,color=ft.Colors.WHITE,size=14),
         ft.Text("Grupos",color=ft.Colors.WHITE,weight=ft.FontWeight.BOLD,size=12)],tight=True,spacing=4),
-        on_click=lambda e:cambiar("grupos"),style=ft.ButtonStyle(bgcolor=ft.Colors.BLUE_GREY_700,color=ft.Colors.WHITE,
+        on_click=lambda e:cambiar("grupos"),
+        style=ft.ButtonStyle(bgcolor=ft.Colors.BLUE_GREY_700,color=ft.Colors.WHITE,
             padding=ft.Padding(12,10,12,10),shape=ft.RoundedRectangleBorder(radius=10)))
+
+    nav_btns["album"]=btn_al
+    nav_btns["stats"]=btn_st
+    nav_btns["qr"]=btn_qr
+    nav_btns["grupos"]=btn_gr
 
     nav=ft.Container(bgcolor=ft.Colors.BLUE_GREY_900,padding=ft.Padding(16,10,16,10),
         content=ft.Row([btn_al,btn_st,btn_qr,btn_gr],spacing=8))
     header=ft.Container(padding=ft.Padding(24,18,24,18),
         gradient=ft.LinearGradient(begin=ft.Alignment(-1,-1),end=ft.Alignment(1,1),
-            colors=[ft.Colors.BLUE_900,ft.Colors.BLUE_500]),
+            colors=["#0D1B3E","#1A3A6B","#2563EB"]),
         content=ft.Row([
             ft.Column([ft.Row([ft.Icon(ft.Icons.SPORTS_SOCCER,size=26,color=ft.Colors.WHITE),
                 ft.Text("Stickers App",size=24,weight=ft.FontWeight.BOLD,color=ft.Colors.WHITE)],spacing=10),
                 ft.Text("Intercambia estampas en Juárez",size=12,color=ft.Colors.BLUE_100)],spacing=4,expand=True),
-            ft.Column([txt_ih,txt_ph],horizontal_alignment=ft.CrossAxisAlignment.CENTER,spacing=2),
-        ],alignment=ft.MainAxisAlignment.SPACE_BETWEEN))
+            ft.Column([txt_ih,txt_ph],horizontal_alignment=ft.CrossAxisAlignment.CENTER,spacing=2)],
+            alignment=ft.MainAxisAlignment.SPACE_BETWEEN))
 
-    page.add(ft.Column([header,nav,vista_c],spacing=0))
+    page.add(ft.Column([header,nav,vista_c],spacing=0,expand=True))
     cambiar("album")
 
 ft.app(target=main)
