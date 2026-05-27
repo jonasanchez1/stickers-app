@@ -728,7 +728,7 @@ def main(page: ft.Page):
             padding=ft.Padding(12,10,12,10),shape=ft.RoundedRectangleBorder(radius=10)))
     btn_gr=ft.Button(content=ft.Row([ft.Icon(ft.Icons.GROUP_WORK,color=ft.Colors.WHITE,size=14),
         ft.Text("Grupos",color=ft.Colors.WHITE,weight=ft.FontWeight.BOLD,size=12)],tight=True,spacing=4),
-        on_click=lambda e:cambiar("grupos"),
+        on_click=lambda e:cambiar("album"),
         style=ft.ButtonStyle(bgcolor=ft.Colors.BLUE_GREY_700,color=ft.Colors.WHITE,
             padding=ft.Padding(12,10,12,10),shape=ft.RoundedRectangleBorder(radius=10)))
 
