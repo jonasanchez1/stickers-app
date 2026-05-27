@@ -133,7 +133,7 @@ def main(page: ft.Page):
 
     snack = ft.SnackBar(content=ft.Text(""), bgcolor=ft.Colors.GREEN_700)
     page.overlay.append(snack)
-    grid_c = ft.Container()
+    grid_c = ft.Container(expand=True)
     vista_c = ft.Container(expand=True)
     resultados = ft.ListView(spacing=12, padding=10, height=300)
 
