@@ -1,0 +1,42 @@
+name: Build APK
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+    - name: Install dependencies
+      run: pip install flet==0.24.1 qrcode requests
+    - name: Set up Java 17
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.24.0'
+        channel: 'stable'
+    - name: Set up Android SDK
+      uses: android-actions/setup-android@v3
+    - name: Accept licenses
+      run: yes | sdkmanager --licenses || true
+    - name: Install build tools
+      run: sdkmanager "platforms;android-33" "build-tools;33.0.2" "platform-tools"
+    - name: Build APK
+      run: |
+        export GRADLE_OPTS="-Xmx3g -Xms512m"
+        flet build apk --module-name panini_match --project stickers --no-rich-output
+    - name: Upload APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: stickers-apk
+        path: build/apk/*.apk
+        if-no-files-found: error
