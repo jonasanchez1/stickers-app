@@ -1,0 +1,12 @@
+[tool.flet]
+app_name = "Stickers App"
+bundle_id = "com.stickers.app"
+description = "Intercambio de estampas de fútbol"
+
+[tool.flet.splash]
+image = "assets/logo.png"
+background_color = "#0D1B3E"
+dark_background_color = "#0D1B3E"
+
+[tool.flet.icons]
+image = "assets/logo.png"
