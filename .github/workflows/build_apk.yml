@@ -13,7 +13,7 @@ jobs:
       with:
         python-version: '3.11'
     - name: Install dependencies
-      run: pip install flet==0.24.1 qrcode requests
+      run: pip install flet==0.28.3 qrcode requests
     - name: Set up Java 17
       uses: actions/setup-java@v4
       with:
@@ -22,7 +22,7 @@ jobs:
     - name: Set up Flutter
       uses: subosito/flutter-action@v2
       with:
-        flutter-version: '3.22.2'
+        flutter-version: '3.29.2'
         channel: 'stable'
     - name: Set up Android SDK
       uses: android-actions/setup-android@v3
