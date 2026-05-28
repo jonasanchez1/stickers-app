@@ -260,7 +260,7 @@ def main(page: ft.Page):
                 shadow=ft.BoxShadow(blur_radius=6, color=ft.Colors.BLACK12, offset=ft.Offset(0, 2)),
                 content=ft.Column([ft.Icon(icono, color=color, size=20), widget,
                     ft.Text(label, size=10, color=ft.Colors.GREY_500, text_align=ft.TextAlign.CENTER)],
-                    horizontal_alignment=ft.CrossAxisAlignment.CENTER, spacing=2))
+                    horizontal_alignment=ft.CrossAxisAlignment.CENTER, spacing=2, tight=True))
 
         cnt = ft.Row([
             tc2("Tengo", txt_t, ft.Colors.GREEN_600, ft.Icons.CHECK_CIRCLE),
@@ -314,13 +314,13 @@ def main(page: ft.Page):
                 padding=ft.Padding(20, 12, 20, 12), shape=ft.RoundedRectangleBorder(radius=12), elevation=4))
 
         return ft.Column([
-            ft.Container(padding=ft.Padding(16, 12, 16, 0), content=cnt),
-            ft.Container(padding=ft.Padding(16, 8, 16, 8),
-                content=ft.Container(padding=20, bgcolor=ft.Colors.WHITE, border_radius=18,
+            ft.Container(padding=ft.Padding(16, 10, 16, 8), content=cnt),
+            ft.Container(padding=ft.Padding(16, 0, 16, 8),
+                content=ft.Container(padding=16, bgcolor=ft.Colors.WHITE, border_radius=18,
                     shadow=ft.BoxShadow(blur_radius=12, color=ft.Colors.BLACK12, offset=ft.Offset(0, 3)),
                     content=ft.Column([
                         ft.Row([ft.Icon(ft.Icons.GRID_VIEW, color=ft.Colors.BLUE_600, size=20),
-                            ft.Text("Mi Álbum", size=17, weight=ft.FontWeight.BOLD, color=ft.Colors.BLUE_GREY_800),
+                            ft.Text("Mi Álbum", size=16, weight=ft.FontWeight.BOLD, color=ft.Colors.BLUE_GREY_800),
                             ft.Container(expand=True),
                             ft.Text("Auto-guardado", size=10, color=ft.Colors.GREEN_400)], spacing=8),
                         leyenda,
@@ -330,7 +330,7 @@ def main(page: ft.Page):
                             ft.Row([ft.Text("Progreso", size=12, color=ft.Colors.GREY_500), txt_prog],
                                 alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
                             barra
-                        ], spacing=4),
+                        ], spacing=4, tight=True),
                         grid_c,
                     ], spacing=10, tight=True))),
             ft.Container(padding=ft.Padding(16, 0, 16, 8),
@@ -340,7 +340,7 @@ def main(page: ft.Page):
                     ft.Text("Intercambios Sugeridos", size=17, weight=ft.FontWeight.BOLD,
                         color=ft.Colors.BLUE_GREY_800)], spacing=8)),
             ft.Container(padding=ft.Padding(16, 0, 16, 16), content=resultados),
-        ], spacing=0, scroll=ft.ScrollMode.AUTO, expand=True)
+        ], spacing=0, scroll=ft.ScrollMode.AUTO)
 
     def vista_stats():
         pc, tt, tr, pct, det = stats(album)
