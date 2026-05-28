@@ -133,7 +133,7 @@ def main(page: ft.Page):
 
     snack = ft.SnackBar(content=ft.Text(""), bgcolor=ft.Colors.GREEN_700)
     page.overlay.append(snack)
-    grid_c = ft.Container()
+    grid_c = ft.Container(content=ft.Text(""), bgcolor=ft.Colors.TRANSPARENT)
     vista_c = ft.Container(expand=True)
     resultados = ft.ListView(spacing=12, padding=10, height=300)
 
@@ -236,10 +236,15 @@ def main(page: ft.Page):
                 on_tap=lambda e, n=i: tap(e, n),
                 on_double_tap=lambda e, n=i: dtap(e, n)))
 
-        filas = []
-        for f in range(0, 20, 5):
-            filas.append(ft.Row(ctrl[f:f + 5], spacing=8, alignment=ft.MainAxisAlignment.START))
-        return ft.Column(filas, spacing=8, tight=True)
+        return ft.GridView(
+            controls=ctrl,
+            runs_count=5,
+            max_extent=62,
+            spacing=8,
+            run_spacing=8,
+            expand=False,
+            height=272,
+        )
 
     def upd_tablero(prefix):
         n, iso = PAISES_DICT.get(prefix, (prefix, "??"))
@@ -247,7 +252,9 @@ def main(page: ft.Page):
         try: txt_ph.update(); txt_ih.update()
         except: pass
         grid_c.content = construir_grid(prefix)
-        try: grid_c.update()
+        try:
+            grid_c.update()
+            page.update()
         except: pass
         upd_cnt(prefix)
 
