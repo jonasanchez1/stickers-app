@@ -266,7 +266,7 @@ def main(page: ft.Page):
             tc2("Tengo", txt_t, ft.Colors.GREEN_600, ft.Icons.CHECK_CIRCLE),
             tc2("Faltan", txt_f, ft.Colors.ORANGE_600, ft.Icons.HELP_OUTLINE),
             tc2("Repetidas", txt_r, ft.Colors.BLUE_400, ft.Icons.COPY_ALL)
-        ], spacing=10)
+        ], spacing=10, alignment=ft.MainAxisAlignment.SPACE_EVENLY)
 
         def chip(color, texto):
             return ft.Row([ft.Container(width=13, height=13, bgcolor=color, border_radius=4),
@@ -321,12 +321,11 @@ def main(page: ft.Page):
                     content=ft.Column([
                         ft.Row([ft.Icon(ft.Icons.GRID_VIEW, color=ft.Colors.BLUE_600, size=20),
                             ft.Text("Mi Álbum", size=17, weight=ft.FontWeight.BOLD, color=ft.Colors.BLUE_GREY_800),
-                            ft.Container(expand=True),
                             ft.Row([ft.Icon(ft.Icons.CLOUD_DONE, color=ft.Colors.GREEN_400, size=16),
                                 ft.Text("Auto-guardado", size=11, color=ft.Colors.GREEN_400)], spacing=4)], spacing=8),
                         leyenda,
                         ft.Divider(height=8, color=ft.Colors.GREY_100),
-                        ft.Row([dd, ft.Container(expand=True), btn_reset], spacing=8),
+                        ft.Row([dd, btn_reset], spacing=8),
                         ft.Column([
                             ft.Row([ft.Text("Progreso", size=12, color=ft.Colors.GREY_500), txt_prog],
                                 alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
