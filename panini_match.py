@@ -239,7 +239,7 @@ def main(page: ft.Page):
         filas = []
         for f in range(0, 20, 5):
             filas.append(ft.Row(ctrl[f:f + 5], spacing=8, alignment=ft.MainAxisAlignment.START))
-        return ft.Column(filas, spacing=8)
+        return ft.Column(filas, spacing=8, tight=True)
 
     def upd_tablero(prefix):
         n, iso = PAISES_DICT.get(prefix, (prefix, "??"))
