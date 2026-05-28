@@ -255,12 +255,12 @@ def main(page: ft.Page):
 
     def vista_album():
         def tc2(label, widget, color, icono):
-            return ft.Container(padding=14, border_radius=14, bgcolor=ft.Colors.WHITE,
+            return ft.Container(width=110, height=90, padding=10, border_radius=14, bgcolor=ft.Colors.WHITE,
                 border=ft.border.all(1, ft.Colors.GREY_200),
                 shadow=ft.BoxShadow(blur_radius=6, color=ft.Colors.BLACK12, offset=ft.Offset(0, 2)),
-                content=ft.Column([ft.Icon(icono, color=color, size=22), widget,
-                    ft.Text(label, size=11, color=ft.Colors.GREY_500, text_align=ft.TextAlign.CENTER)],
-                    horizontal_alignment=ft.CrossAxisAlignment.CENTER, spacing=3))
+                content=ft.Column([ft.Icon(icono, color=color, size=20), widget,
+                    ft.Text(label, size=10, color=ft.Colors.GREY_500, text_align=ft.TextAlign.CENTER)],
+                    horizontal_alignment=ft.CrossAxisAlignment.CENTER, spacing=2))
 
         cnt = ft.Row([
             tc2("Tengo", txt_t, ft.Colors.GREEN_600, ft.Icons.CHECK_CIRCLE),
@@ -321,18 +321,18 @@ def main(page: ft.Page):
                     content=ft.Column([
                         ft.Row([ft.Icon(ft.Icons.GRID_VIEW, color=ft.Colors.BLUE_600, size=20),
                             ft.Text("Mi Álbum", size=17, weight=ft.FontWeight.BOLD, color=ft.Colors.BLUE_GREY_800),
-                            ft.Row([ft.Icon(ft.Icons.CLOUD_DONE, color=ft.Colors.GREEN_400, size=16),
-                                ft.Text("Auto-guardado", size=11, color=ft.Colors.GREEN_400)], spacing=4)], spacing=8),
+                            ft.Container(expand=True),
+                            ft.Text("Auto-guardado", size=10, color=ft.Colors.GREEN_400)], spacing=8),
                         leyenda,
-                        ft.Divider(height=8, color=ft.Colors.GREY_100),
-                        ft.Row([dd, btn_reset], spacing=8),
+                        ft.Divider(height=6, color=ft.Colors.GREY_100),
+                        ft.Row([dd, ft.Container(expand=True), btn_reset], spacing=8),
                         ft.Column([
                             ft.Row([ft.Text("Progreso", size=12, color=ft.Colors.GREY_500), txt_prog],
                                 alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
                             barra
-                        ], spacing=5),
-                        ft.Container(content=grid_c, padding=ft.Padding(0, 6, 0, 0)),
-                    ], spacing=12))),
+                        ], spacing=4),
+                        grid_c,
+                    ], spacing=10, tight=True))),
             ft.Container(padding=ft.Padding(16, 0, 16, 8),
                 content=ft.Row([btn_bus, btn_save], alignment=ft.MainAxisAlignment.CENTER, spacing=12)),
             ft.Container(padding=ft.Padding(16, 0, 16, 4),
