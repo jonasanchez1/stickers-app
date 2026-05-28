@@ -255,7 +255,7 @@ def main(page: ft.Page):
 
     def vista_album():
         def tc2(label, widget, color, icono):
-            return ft.Container(expand=True, padding=14, border_radius=14, bgcolor=ft.Colors.WHITE,
+            return ft.Container(padding=14, border_radius=14, bgcolor=ft.Colors.WHITE,
                 border=ft.border.all(1, ft.Colors.GREY_200),
                 shadow=ft.BoxShadow(blur_radius=6, color=ft.Colors.BLACK12, offset=ft.Offset(0, 2)),
                 content=ft.Column([ft.Icon(icono, color=color, size=22), widget,
