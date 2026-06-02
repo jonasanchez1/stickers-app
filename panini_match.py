@@ -119,7 +119,7 @@ def main(page: ft.Page):
     page.theme_mode = ft.ThemeMode.LIGHT
     page.bgcolor = ft.Colors.GREY_100
     page.padding = 0
-    page.scroll = None
+    page.scroll = "adaptive"
 
     album = cargar()
     pais_sel = ["MEX"]
@@ -292,19 +292,13 @@ def main(page: ft.Page):
     # VISTA ÁLBUM — estructura flat y simple para Android
     # ─────────────────────────────────────────────────────────────────
     def vista_album():
-        # Tarjetas de contadores con dimensiones FIJAS
-        def tarjeta(label, widget, color, icono, border_color):
-            return ft.Container(
-                width=110, height=85,
-                padding=ft.Padding(8, 8, 8, 8),
-                border_radius=12, bgcolor=ft.Colors.WHITE,
-                border=ft.border.all(1, border_color),
-                shadow=ft.BoxShadow(blur_radius=4, color=ft.Colors.BLACK12, offset=ft.Offset(0, 2)),
-                content=ft.Column([
-                    ft.Icon(icono, color=color, size=18),
-                    widget,
-                    ft.Text(label, size=10, color=ft.Colors.GREY_500, text_align=ft.TextAlign.CENTER)
-                ], horizontal_alignment=ft.CrossAxisAlignment.CENTER, spacing=2, tight=True))
+        def tarjeta(label, widget, color, icono, bc):
+            return ft.Container(width=110, height=85, padding=ft.Padding(8,8,8,8),
+                border_radius=12, bgcolor=ft.Colors.WHITE, border=ft.border.all(1, bc),
+                shadow=ft.BoxShadow(blur_radius=4, color=ft.Colors.BLACK12, offset=ft.Offset(0,2)),
+                content=ft.Column([ft.Icon(icono, color=color, size=18), widget,
+                    ft.Text(label, size=10, color=ft.Colors.GREY_500, text_align=ft.TextAlign.CENTER)],
+                    horizontal_alignment=ft.CrossAxisAlignment.CENTER, spacing=2, tight=True))
 
         contadores = ft.Row([
             tarjeta("Tengo", txt_t, ft.Colors.GREEN_600, ft.Icons.CHECK_CIRCLE, ft.Colors.GREEN_200),
@@ -312,26 +306,17 @@ def main(page: ft.Page):
             tarjeta("Repetidas", txt_r, ft.Colors.BLUE_400, ft.Icons.COPY_ALL, ft.Colors.BLUE_200),
         ], spacing=8, alignment=ft.MainAxisAlignment.CENTER)
 
-        # Leyenda
         def chip(color, texto):
-            return ft.Row([
-                ft.Container(width=12, height=12, bgcolor=color, border_radius=3),
-                ft.Text(texto, size=11, color=ft.Colors.BLUE_GREY_700)
-            ], spacing=4)
+            return ft.Row([ft.Container(width=12, height=12, bgcolor=color, border_radius=3),
+                ft.Text(texto, size=11, color=ft.Colors.BLUE_GREY_700)], spacing=4)
 
-        leyenda = ft.Row([
-            chip(C_FALTA, "Falta"),
-            chip(C_TENGO, "Tengo (1 clic)"),
-            chip(C_REPETIDA, "Repetida (2 clics)")
-        ], spacing=10)
+        leyenda = ft.Row([chip(C_FALTA,"Falta"), chip(C_TENGO,"Tengo (1 clic)"),
+            chip(C_REPETIDA,"Repetida (2 clics)")], spacing=10)
 
-        # Dropdown selector de país
-        dd = ft.Dropdown(
-            label="Selección Nacional", value=pais_sel[0],
+        dd = ft.Dropdown(label="Selección Nacional", value=pais_sel[0],
             options=[ft.dropdown.Option(key=c, text=f"[{iso}]  {n}") for c, n, iso in PAISES],
             width=220, border_radius=10, bgcolor=ft.Colors.WHITE, on_change=on_pais)
 
-        # Botón reiniciar
         def reset(e):
             p = pais_sel[0]; nm, _ = PAISES_DICT.get(p, (p, ""))
             for i in range(1, 21): album.pop(f"{p}{i}", None)
@@ -344,26 +329,15 @@ def main(page: ft.Page):
                 tight=True, spacing=4),
             on_click=reset,
             style=ft.ButtonStyle(bgcolor=ft.Colors.ORANGE_600, color=ft.Colors.WHITE,
-                padding=ft.Padding(12, 10, 12, 10), shape=ft.RoundedRectangleBorder(radius=10)))
+                padding=ft.Padding(12,10,12,10), shape=ft.RoundedRectangleBorder(radius=10)))
 
-        # Barra de progreso
-        progreso = ft.Column([
-            ft.Row([
-                ft.Text("Progreso", size=12, color=ft.Colors.GREY_500),
-                ft.Container(expand=True),
-                txt_prog
-            ], spacing=8),
-            barra
-        ], spacing=4, tight=True)
-
-        # Botones principales
         btn_bus = ft.Button(
             content=ft.Row([ft.Icon(ft.Icons.SEARCH, color=ft.Colors.WHITE),
                 ft.Text("Buscar", color=ft.Colors.WHITE, weight=ft.FontWeight.BOLD, size=14)],
                 tight=True, spacing=6),
             on_click=buscar,
             style=ft.ButtonStyle(bgcolor=ft.Colors.BLUE_600, color=ft.Colors.WHITE,
-                padding=ft.Padding(20, 12, 20, 12), shape=ft.RoundedRectangleBorder(radius=12), elevation=4))
+                padding=ft.Padding(20,12,20,12), shape=ft.RoundedRectangleBorder(radius=12), elevation=4))
 
         btn_save = ft.Button(
             content=ft.Row([ft.Icon(ft.Icons.SAVE, color=ft.Colors.WHITE),
@@ -371,60 +345,44 @@ def main(page: ft.Page):
                 tight=True, spacing=6),
             on_click=lambda e: snk("✅ Guardado") if guardar(album) else snk("❌ Error", ft.Colors.RED_700),
             style=ft.ButtonStyle(bgcolor=ft.Colors.GREEN_600, color=ft.Colors.WHITE,
-                padding=ft.Padding(20, 12, 20, 12), shape=ft.RoundedRectangleBorder(radius=12), elevation=4))
+                padding=ft.Padding(20,12,20,12), shape=ft.RoundedRectangleBorder(radius=12), elevation=4))
 
-        # Grid actual
         grid = grid_ref[0] if grid_ref[0] is not None else construir_grid(pais_sel[0])
 
-        # LAYOUT: Column con scroll - más confiable en Android que ListView
-        return ft.Container(
-            expand=True,
-            content=ft.Column([
-                ft.Container(height=10),
-                # Contadores
-                ft.Container(padding=ft.Padding(16, 0, 16, 0), content=contadores),
-                ft.Container(height=10),
-                # Card con info del álbum
-                ft.Container(
-                    margin=ft.Margin(16, 0, 16, 0),
-                    padding=ft.Padding(16, 12, 16, 12),
-                    bgcolor=ft.Colors.WHITE,
-                    border_radius=16,
-                    shadow=ft.BoxShadow(blur_radius=8, color=ft.Colors.BLACK12, offset=ft.Offset(0, 2)),
-                    content=ft.Column([
-                        ft.Row([
-                            ft.Icon(ft.Icons.GRID_VIEW, color=ft.Colors.BLUE_600, size=18),
-                            ft.Text("Mi Álbum", size=16, weight=ft.FontWeight.BOLD, color=ft.Colors.BLUE_GREY_800),
-                            ft.Container(expand=True),
-                            ft.Row([ft.Icon(ft.Icons.CLOUD_DONE, color=ft.Colors.GREEN_400, size=14),
-                                ft.Text("Auto-guardado", size=10, color=ft.Colors.GREEN_400)], spacing=4)
-                        ], spacing=8),
-                        leyenda,
-                        ft.Divider(height=6, color=ft.Colors.GREY_100),
-                        ft.Row([dd, ft.Container(expand=True), btn_reset], spacing=8),
-                        progreso,
-                    ], spacing=10, tight=True)),
-                ft.Container(height=8),
-                # GRID — en Column con scroll, SIN ListView wrapper
-                ft.Container(padding=ft.Padding(12, 0, 12, 0), content=grid),
-                ft.Container(height=8),
-                # Botones
-                ft.Container(padding=ft.Padding(16, 0, 16, 0),
-                    content=ft.Row([btn_bus, btn_save], spacing=12, alignment=ft.MainAxisAlignment.CENTER)),
-                ft.Container(height=12),
-                # Resultados de intercambio
-                ft.Container(padding=ft.Padding(16, 0, 16, 4),
-                    content=ft.Row([
-                        ft.Icon(ft.Icons.SWAP_HORIZ, color=ft.Colors.BLUE_600, size=18),
-                        ft.Text("Intercambios Sugeridos", size=16, weight=ft.FontWeight.BOLD,
-                            color=ft.Colors.BLUE_GREY_800)
-                    ], spacing=8)),
-                ft.Container(padding=ft.Padding(16, 0, 16, 16), content=resultados),
-            ], spacing=0, scroll=ft.ScrollMode.AUTO))
+        return ft.Column([
+            ft.Container(height=10),
+            ft.Container(padding=ft.Padding(16,0,16,0), content=contadores),
+            ft.Container(height=10),
+            ft.Container(margin=ft.Margin(16,0,16,0), padding=ft.Padding(16,12,16,12),
+                bgcolor=ft.Colors.WHITE, border_radius=16,
+                shadow=ft.BoxShadow(blur_radius=8, color=ft.Colors.BLACK12, offset=ft.Offset(0,2)),
+                content=ft.Column([
+                    ft.Row([ft.Icon(ft.Icons.GRID_VIEW, color=ft.Colors.BLUE_600, size=18),
+                        ft.Text("Mi Álbum", size=16, weight=ft.FontWeight.BOLD, color=ft.Colors.BLUE_GREY_800),
+                        ft.Container(expand=True),
+                        ft.Text("Auto-guardado", size=10, color=ft.Colors.GREEN_400)], spacing=8),
+                    leyenda,
+                    ft.Divider(height=6, color=ft.Colors.GREY_100),
+                    ft.Row([dd, ft.Container(expand=True), btn_reset], spacing=8),
+                    ft.Column([
+                        ft.Row([ft.Text("Progreso", size=12, color=ft.Colors.GREY_500),
+                            ft.Container(expand=True), txt_prog]),
+                        barra], spacing=4, tight=True),
+                ], spacing=10, tight=True)),
+            ft.Container(height=8),
+            ft.Container(padding=ft.Padding(12,0,12,0), content=grid),
+            ft.Container(height=8),
+            ft.Container(padding=ft.Padding(16,0,16,0),
+                content=ft.Row([btn_bus, btn_save], spacing=12, alignment=ft.MainAxisAlignment.CENTER)),
+            ft.Container(height=12),
+            ft.Container(padding=ft.Padding(16,0,16,4),
+                content=ft.Row([ft.Icon(ft.Icons.SWAP_HORIZ, color=ft.Colors.BLUE_600, size=18),
+                    ft.Text("Intercambios Sugeridos", size=16, weight=ft.FontWeight.BOLD,
+                        color=ft.Colors.BLUE_GREY_800)], spacing=8)),
+            ft.Container(padding=ft.Padding(16,0,16,16), content=resultados),
+        ], spacing=0, tight=True)
 
-    # ─────────────────────────────────────────────────────────────────
-    # VISTA STATS
-    # ─────────────────────────────────────────────────────────────────
+
     def vista_stats():
         pc, tt, tr, pct, det = stats(album)
 
