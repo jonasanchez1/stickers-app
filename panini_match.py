@@ -404,7 +404,11 @@ def main(page: ft.Page):
                 ], spacing=10, tight=True)),
             ft.Container(height=8),
             # GRID — directo en ListView, solo dentro de un Container de padding
-            ft.Container(padding=ft.Padding(12, 0, 12, 0), content=grid),
+            ft.Container(
+                padding=ft.Padding(12, 0, 12, 0),
+                alignment=ft.alignment.top_center,
+                height=272,
+                content=grid),
             ft.Container(height=8),
             # Botones
             ft.Container(padding=ft.Padding(16, 0, 16, 0),
