@@ -265,9 +265,9 @@ def main(page: ft.Page):
         return ft.GridView(
             controls=ctrl,
             runs_count=5,
+            max_extent=58,
             spacing=6,
             run_spacing=6,
-            child_aspect_ratio=1.0,
             height=260,
             padding=ft.Padding(4, 4, 4, 4))
 
@@ -376,49 +376,51 @@ def main(page: ft.Page):
         # Grid actual
         grid = grid_ref[0] if grid_ref[0] is not None else construir_grid(pais_sel[0])
 
-        # LAYOUT: ListView completamente flat
-        return ft.Container(expand=True, content=ft.Column([
-            ft.Container(height=10),
-            # Contadores
-            ft.Container(padding=ft.Padding(16, 0, 16, 0), content=contadores),
-            ft.Container(height=10),
-            # Card con info del álbum
-            ft.Container(
-                margin=ft.Margin(16, 0, 16, 0),
-                padding=ft.Padding(16, 12, 16, 12),
-                bgcolor=ft.Colors.WHITE,
-                border_radius=16,
-                shadow=ft.BoxShadow(blur_radius=8, color=ft.Colors.BLACK12, offset=ft.Offset(0, 2)),
-                content=ft.Column([
-                    ft.Row([
-                        ft.Icon(ft.Icons.GRID_VIEW, color=ft.Colors.BLUE_600, size=18),
-                        ft.Text("Mi Álbum", size=16, weight=ft.FontWeight.BOLD, color=ft.Colors.BLUE_GREY_800),
-                        ft.Container(expand=True),
-                        ft.Row([ft.Icon(ft.Icons.CLOUD_DONE, color=ft.Colors.GREEN_400, size=14),
-                            ft.Text("Auto-guardado", size=10, color=ft.Colors.GREEN_400)], spacing=4)
-                    ], spacing=8),
-                    leyenda,
-                    ft.Divider(height=6, color=ft.Colors.GREY_100),
-                    ft.Row([dd, ft.Container(expand=True), btn_reset], spacing=8),
-                    progreso,
-                ], spacing=10, tight=True)),
-            ft.Container(height=8),
-            # GRID — directo en ListView, solo dentro de un Container de padding
-            ft.Container(padding=ft.Padding(12, 0, 12, 0), content=grid),
-            ft.Container(height=8),
-            # Botones
-            ft.Container(padding=ft.Padding(16, 0, 16, 0),
-                content=ft.Row([btn_bus, btn_save], spacing=12, alignment=ft.MainAxisAlignment.CENTER)),
-            ft.Container(height=12),
-            # Resultados de intercambio
-            ft.Container(padding=ft.Padding(16, 0, 16, 4),
-                content=ft.Row([
-                    ft.Icon(ft.Icons.SWAP_HORIZ, color=ft.Colors.BLUE_600, size=18),
-                    ft.Text("Intercambios Sugeridos", size=16, weight=ft.FontWeight.BOLD,
-                        color=ft.Colors.BLUE_GREY_800)
-                ], spacing=8)),
-            ft.Container(padding=ft.Padding(16, 0, 16, 16), content=resultados),
-        ], expand=True, spacing=0, padding=0)
+        # LAYOUT: Column con scroll - más confiable en Android que ListView
+        return ft.Container(
+            expand=True,
+            content=ft.Column([
+                ft.Container(height=10),
+                # Contadores
+                ft.Container(padding=ft.Padding(16, 0, 16, 0), content=contadores),
+                ft.Container(height=10),
+                # Card con info del álbum
+                ft.Container(
+                    margin=ft.Margin(16, 0, 16, 0),
+                    padding=ft.Padding(16, 12, 16, 12),
+                    bgcolor=ft.Colors.WHITE,
+                    border_radius=16,
+                    shadow=ft.BoxShadow(blur_radius=8, color=ft.Colors.BLACK12, offset=ft.Offset(0, 2)),
+                    content=ft.Column([
+                        ft.Row([
+                            ft.Icon(ft.Icons.GRID_VIEW, color=ft.Colors.BLUE_600, size=18),
+                            ft.Text("Mi Álbum", size=16, weight=ft.FontWeight.BOLD, color=ft.Colors.BLUE_GREY_800),
+                            ft.Container(expand=True),
+                            ft.Row([ft.Icon(ft.Icons.CLOUD_DONE, color=ft.Colors.GREEN_400, size=14),
+                                ft.Text("Auto-guardado", size=10, color=ft.Colors.GREEN_400)], spacing=4)
+                        ], spacing=8),
+                        leyenda,
+                        ft.Divider(height=6, color=ft.Colors.GREY_100),
+                        ft.Row([dd, ft.Container(expand=True), btn_reset], spacing=8),
+                        progreso,
+                    ], spacing=10, tight=True)),
+                ft.Container(height=8),
+                # GRID — en Column con scroll, SIN ListView wrapper
+                ft.Container(padding=ft.Padding(12, 0, 12, 0), content=grid),
+                ft.Container(height=8),
+                # Botones
+                ft.Container(padding=ft.Padding(16, 0, 16, 0),
+                    content=ft.Row([btn_bus, btn_save], spacing=12, alignment=ft.MainAxisAlignment.CENTER)),
+                ft.Container(height=12),
+                # Resultados de intercambio
+                ft.Container(padding=ft.Padding(16, 0, 16, 4),
+                    content=ft.Row([
+                        ft.Icon(ft.Icons.SWAP_HORIZ, color=ft.Colors.BLUE_600, size=18),
+                        ft.Text("Intercambios Sugeridos", size=16, weight=ft.FontWeight.BOLD,
+                            color=ft.Colors.BLUE_GREY_800)
+                    ], spacing=8)),
+                ft.Container(padding=ft.Padding(16, 0, 16, 16), content=resultados),
+            ], spacing=0, scroll=ft.ScrollMode.AUTO))
 
     # ─────────────────────────────────────────────────────────────────
     # VISTA STATS
