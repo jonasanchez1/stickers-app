@@ -377,7 +377,7 @@ def main(page: ft.Page):
         grid = grid_ref[0] if grid_ref[0] is not None else construir_grid(pais_sel[0])
 
         # LAYOUT: ListView completamente flat
-        return ft.ListView([
+        return ft.Container(expand=True, content=ft.Column([
             ft.Container(height=10),
             # Contadores
             ft.Container(padding=ft.Padding(16, 0, 16, 0), content=contadores),
@@ -404,11 +404,7 @@ def main(page: ft.Page):
                 ], spacing=10, tight=True)),
             ft.Container(height=8),
             # GRID — directo en ListView, solo dentro de un Container de padding
-            ft.Container(
-                padding=ft.Padding(12, 0, 12, 0),
-                alignment=ft.alignment.top_center,
-                height=272,
-                content=grid),
+            ft.Container(padding=ft.Padding(12, 0, 12, 0), content=grid),
             ft.Container(height=8),
             # Botones
             ft.Container(padding=ft.Padding(16, 0, 16, 0),
