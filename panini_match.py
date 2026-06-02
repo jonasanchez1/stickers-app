@@ -265,9 +265,9 @@ def main(page: ft.Page):
         return ft.GridView(
             controls=ctrl,
             runs_count=5,
-            max_extent=58,
             spacing=6,
             run_spacing=6,
+            child_aspect_ratio=1.0,
             height=260,
             padding=ft.Padding(4, 4, 4, 4))
 
